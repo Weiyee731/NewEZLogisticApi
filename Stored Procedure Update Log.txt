@@ -1,3 +1,4 @@
 2022-April-01 
 -------------
 [2022-April-01 14:24] --> [/] -- [SP] -- [Inventory_ViewStockListByDate] --> Bug fixed  
+[2022-April-01 16:54] --> [/] -- [SP] -- [Container_InsertNewContainer] --> Added conditional check
