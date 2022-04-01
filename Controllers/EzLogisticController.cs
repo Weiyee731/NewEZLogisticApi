@@ -458,6 +458,8 @@ namespace EzLogistic.Controllers
         public string Inventory_ViewStockListByDate(string STARTDATE, string ENDDATE)
         {
             string Result = "";
+            STARTDATE = String.IsNullOrEmpty(STARTDATE) ? "-" : STARTDATE;
+            ENDDATE = String.IsNullOrEmpty(ENDDATE)  ? "-" : ENDDATE;
             SqlParameter[] cmdParm = { new SqlParameter("@STARTDATE", STARTDATE),
                                        new SqlParameter("@ENDDATE", ENDDATE)};
             DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Inventory_ViewStockListByDate", cmdParm);
