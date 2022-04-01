@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 using System.Web.Script.Serialization;
-using System.Net.Http;
-using System.Net;
 
 namespace EzLogistic.Controllers
 {
@@ -838,19 +838,25 @@ namespace EzLogistic.Controllers
         public string Transaction_UpdateTransactionPayment(string TRANSACTIONID, string PAYMENTAMMOUNT, string PAYMENTMETHOD, string REFERENCENO, string DATETIME)
         {
             string Result = "";
-            SqlParameter[] cmdParm = { new SqlParameter("@TRANSACTIONID", Convert.ToInt32(TRANSACTIONID)),
-                                       new SqlParameter("@PAYMENTAMMOUNT", Convert.ToDecimal(PAYMENTAMMOUNT)),
+            string[] TRANSACTIONIDList = TRANSACTIONID.Split(';');
+            string[] PAYMENTAMMOUNTList = PAYMENTAMMOUNT.Split(';');
+
+            for (int i = 0; i < TRANSACTIONIDList.Length; i++)
+            {
+                SqlParameter[] cmdParm = { new SqlParameter("@TRANSACTIONID", Convert.ToInt32(TRANSACTIONIDList[i])),
+                                       new SqlParameter("@PAYMENTAMMOUNT", Convert.ToDecimal(PAYMENTAMMOUNTList[i])),
                                        new SqlParameter("@PAYMENTMETHOD", PAYMENTMETHOD),
                                        new SqlParameter("@REFERENCENO", REFERENCENO),
                                        new SqlParameter("@DATETIME", DATETIME)};
-            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Transaction_UpdateTransactionPayment", cmdParm);
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
-            }
-            else
-            {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Transaction_UpdateTransactionPayment", cmdParm);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+                }
+                else
+                {
+                    Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                }
             }
             return Result;
         }
@@ -932,8 +938,7 @@ namespace EzLogistic.Controllers
             dr["SalesByContainer"] = DataTableToJSONWithJavaScriptSerializer(dsSaleByContainer.Tables[0]);
             ds.Tables[0].Rows.Add(dr);
             Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
-            
-
+           
             return Result;
         }
 
