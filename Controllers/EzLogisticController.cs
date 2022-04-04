@@ -660,9 +660,15 @@ namespace EzLogistic.Controllers
                 DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Container_InsertNewContainer", cmdParm);
                 if (ds.Tables[0].Rows.Count > 0)
                 {
-                    for (int i = 0; i < USERCODELIST.Length; i++)
+                    if (ds.Tables[0].Rows[0]["ReturnVal"].ToString() == "0")
                     {
-                        SqlParameter[] cmdParm2 = { new SqlParameter("@USERCODE", USERCODELIST[i]),
+                        Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + ds.Tables[0].Rows[0]["ReturnMsg"].ToString() + "\"}]";
+                    }
+                    else
+                    {
+                        for (int i = 0; i < USERCODELIST.Length; i++)
+                        {
+                            SqlParameter[] cmdParm2 = { new SqlParameter("@USERCODE", USERCODELIST[i]),
                                        new SqlParameter("@TRACKINGNUMBER", TRACKINGNUMBERLIST[i]),
                                        new SqlParameter("@AREACODE", AREACODELIST[i]),
                                        new SqlParameter("@PRODUCTWEIGHT", Convert.ToDecimal(PRODUCTWEIGHTLIST[i])),
@@ -677,14 +683,15 @@ namespace EzLogistic.Controllers
                                        new SqlParameter("@ESTCONTAINERID", ds.Tables[0].Rows[0]["ContainerID"]),
                                        new SqlParameter("@ESTCONTAINERNAME", Stock.CONTAINERNAME),
                                        new SqlParameter("@ESTCONTAINERDATE", Stock.CONTAINERDATE)};
-                        DataSet ds2 = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Inventory_InsertStock", cmdParm2);
-                        if (ds2.Tables[0].Rows.Count > 0)
-                        {
-                            Result = DataTableToJSONWithJavaScriptSerializer(ds2.Tables[0]);
-                        }
-                        else
-                        {
-                            Result = "fail";
+                            DataSet ds2 = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Inventory_InsertStock", cmdParm2);
+                            if (ds2.Tables[0].Rows.Count > 0)
+                            {
+                                Result = DataTableToJSONWithJavaScriptSerializer(ds2.Tables[0]);
+                            }
+                            else
+                            {
+                                Result = "fail";
+                            }
                         }
                     }
                 }
