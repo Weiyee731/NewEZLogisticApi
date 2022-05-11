@@ -6,7 +6,7 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web.Http;
 
-namespace EzLogistic
+namespace AlgricultureIOTApi
 {
     public static class WebApiConfig
     {
