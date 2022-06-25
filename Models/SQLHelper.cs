@@ -6,7 +6,7 @@ using System.Web.Services.Protocols;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace AlgricultureIOTApi.Models
+namespace EzLogistic.Models
 {
     public class SQLHelper : System.Web.Services.WebService
     {
