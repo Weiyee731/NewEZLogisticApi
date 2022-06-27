@@ -714,21 +714,31 @@ namespace EzLogistic.Controllers
 
         [HttpGet]
         [Route("api/EzLogistic/Transaction_InsertTransaction")]
-        public string Transaction_InsertTransaction(string USERID,string CALCULATIONTYPE, string ORDERTOTALMOUNT, string ORDERPAIDMOUNT, string STOCKID, string PRODUCTPRICE)
+        public string Transaction_InsertTransaction(string USERID,string CALCULATIONTYPE, string DELIVERYFEE, string ORDERTOTALMOUNT, string ORDERSUBTOTALMOUNT, string ORDERPAIDMOUNT, string FIRSTKG, string SUBSEQUENCEKG, string STOCKID, string PRODUCTPRICE, string PRODUCTQUANTITY, string PRODUCTDIMENSION, string PRODUCTUNITPRICE)
         {
             string Result = "";
             SqlParameter[] cmdParm = { new SqlParameter("@USERID", Convert.ToInt32(USERID)),
                                        new SqlParameter("@CALCULATIONTYPE", CALCULATIONTYPE),
+                                       new SqlParameter("@DELIVERYFEE", Convert.ToDecimal(DELIVERYFEE)),
+                                       new SqlParameter("@ORDERSUBTOTALMOUNT", Convert.ToDecimal(ORDERSUBTOTALMOUNT)),
                                        new SqlParameter("@ORDERTOTALMOUNT", Convert.ToDecimal(ORDERTOTALMOUNT)),
-                                       new SqlParameter("@ORDERPAIDMOUNT", Convert.ToDecimal(ORDERPAIDMOUNT))};
+                                       new SqlParameter("@ORDERPAIDMOUNT", Convert.ToDecimal(ORDERPAIDMOUNT)),
+                                       new SqlParameter("@FIRSTKG", Convert.ToDecimal(FIRSTKG)),
+                                       new SqlParameter("@SUBSEQUENCEKG", Convert.ToDecimal(SUBSEQUENCEKG))};
             DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Transaction_InsertTransaction", cmdParm);
             string[] StockIdList = STOCKID.Split(',');
             string[] ProductPriceList = PRODUCTPRICE.Split(',');
+            string[] ProductQuantityList = PRODUCTQUANTITY.Split(',');
+            string[] ProductDimensionList = PRODUCTDIMENSION.Split(',');
+            string[] ProductUnitPriceList = PRODUCTUNITPRICE.Split(',');
             for (int i = 0; i < StockIdList.Length; i++)
             {
                 SqlParameter[] cmdParm2 = { new SqlParameter("@TRANSACTIONID", Convert.ToInt32(ds.Tables[0].Rows[0]["TransactionID"])),
                                             new SqlParameter("@STOCKID", Convert.ToInt32(StockIdList[i])),
-                                            new SqlParameter("@PRODUCTPRICE", Convert.ToDecimal(ProductPriceList[i]))};
+                                            new SqlParameter("@PRODUCTPRICE", Convert.ToDecimal(ProductPriceList[i])),
+                                            new SqlParameter("@PRODUCTQUANTITY", Convert.ToDecimal(ProductQuantityList[i])),
+                                            new SqlParameter("@PRODUCTDIMENSION", Convert.ToDecimal(ProductDimensionList[i])),
+                                            new SqlParameter("@PRODUCTUNITPRICE", Convert.ToDecimal(ProductUnitPriceList[i]))};
                 DataSet ds2 = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Transaction_InsertTransactionDetail", cmdParm2);
                 if(ds2.Tables[0].Rows[0]["AdditionalCharges"].ToString()!="-" && ds2.Tables[0].Rows[0]["AdditionalCharges"].ToString() != "[]" && ds2.Tables[0].Rows[0]["AdditionalCharges"].ToString() != "null" && ds2.Tables[0].Rows[0]["AdditionalCharges"].ToString() != null)
                 {
@@ -745,9 +755,10 @@ namespace EzLogistic.Controllers
                     }
                 }
             }
-            SqlParameter[] cmdParm4 = { new SqlParameter("@TRANSACTIONID", Convert.ToInt32(ds.Tables[0].Rows[0]["TransactionID"]))};
-            DataSet ds4 = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Transaction_UpdateTransactionAmount", cmdParm4);
-            
+            //SqlParameter[] cmdParm4 = { new SqlParameter("@TRANSACTIONID", Convert.ToInt32(ds.Tables[0].Rows[0]["TransactionID"]))};
+            //DataSet ds4 = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Transaction_UpdateTransactionAmount", cmdParm4);
+
+
             Result = "[{\"ReturnVal\":\"1\",\"ReturnMsg\":\"had successfully added transaction\",\"TransactionID\":\"" + ds.Tables[0].Rows[0]["TransactionID"] + "\"}]";
             return Result;
         }
@@ -871,6 +882,25 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
+        [Route("api/EzLogistic/Transaction_UpdateTransactionDetailHandling")]
+        public string Transaction_UpdateTransactionDetailHandling(string TRANSACTIONDETAILID, string PRODUCTHANDLINGPRICE)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@TRANSACTIONDETAILID", Convert.ToInt32(TRANSACTIONDETAILID)),
+                                           new SqlParameter("@PRODUCTHANDLINGPRICE", Convert.ToDecimal(PRODUCTHANDLINGPRICE))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Transaction_UpdateTransactionDetailHandling", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
         [Route("api/EzLogistic/Transaction_ViewArchiveTransaction")]
         public string Transaction_ViewArchiveTransaction(string STARTDATE, string ENDDATE)
         {
@@ -947,7 +977,6 @@ namespace EzLogistic.Controllers
             dr["SalesByContainer"] = DataTableToJSONWithJavaScriptSerializer(dsSaleByContainer.Tables[0]);
             ds.Tables[0].Rows.Add(dr);
             Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
-           
             return Result;
         }
 
@@ -956,8 +985,36 @@ namespace EzLogistic.Controllers
         public string Transaction_DeleteTransaction(string TRANSACTIONID)
         {
             string Result = "";
-            SqlParameter[] cmdParm = { new SqlParameter("@TRANSACTIONID", Convert.ToInt32(TRANSACTIONID))};
-            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Transaction_DeleteTransaction", cmdParm);
+            string[] TRANSACTIONIDList = TRANSACTIONID.Split(',');
+
+            for (int i = 0; i < TRANSACTIONIDList.Length; i++)
+            {
+                SqlParameter[] cmdParm = { new SqlParameter("@TRANSACTIONID", Convert.ToInt32(TRANSACTIONIDList[i])) };
+                DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Transaction_DeleteTransaction", cmdParm);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+                }
+                else
+                {
+                    Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                }
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/EzLogistic/User_InsertAreaCode")]
+        public string User_InsertAreaCode(string AREACODE, string AREANAME, string AGENDIND, string USERID, string MINIMUMCUBIC, string AREACHARGES)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@AREACODE", AREACODE),
+                                       new SqlParameter("@AREANAME", AREANAME),
+                                       new SqlParameter("@AGENDIND", Convert.ToInt32(AGENDIND)),
+                                       new SqlParameter("@USERID", Convert.ToInt32(USERID)),
+                                       new SqlParameter("@MINIMUMCUBIC", Convert.ToDecimal(MINIMUMCUBIC)),
+                                       new SqlParameter("@AREACHARGES", Convert.ToDecimal(AREACHARGES))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.User_InsertAreaCode", cmdParm);
             if (ds.Tables[0].Rows.Count > 0)
             {
                 Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
@@ -969,7 +1026,46 @@ namespace EzLogistic.Controllers
             return Result;
         }
 
+        [HttpGet]
+        [Route("api/EzLogistic/User_UpdateAreaCode")]
+        public string User_UpdateAreaCode(string USERAREAID, string AREACODE, string AREANAME, string AGENDIND, string USERID, string MINIMUMCUBIC, string AREACHARGES)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@USERAREAID", Convert.ToInt32(USERAREAID)),
+                                       new SqlParameter("@AREACODE", AREACODE),
+                                       new SqlParameter("@AREANAME", AREANAME),
+                                       new SqlParameter("@AGENDIND", Convert.ToInt32(AGENDIND)),
+                                       new SqlParameter("@USERID", Convert.ToInt32(USERID)),
+                                       new SqlParameter("@MINIMUMCUBIC", Convert.ToDecimal(MINIMUMCUBIC)),
+                                       new SqlParameter("@AREACHARGES", Convert.ToDecimal(AREACHARGES))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.User_UpdateAreaCode", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
 
-
+        [HttpGet]
+        [Route("api/EzLogistic/User_DeleteAreaCode")]
+        public string User_DeleteAreaCode(string USERAREAID)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@USERAREAID", Convert.ToInt32(USERAREAID))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.User_DeleteAreaCode", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
     }
 }
