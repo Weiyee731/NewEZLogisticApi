@@ -864,10 +864,10 @@ namespace EzLogistic.Controllers
             for (int i = 0; i < TRANSACTIONIDList.Length; i++)
             {
                 SqlParameter[] cmdParm = { new SqlParameter("@TRANSACTIONID", Convert.ToInt32(TRANSACTIONIDList[i])),
-                                       new SqlParameter("@PAYMENTAMMOUNT", Convert.ToDecimal(PAYMENTAMMOUNTList[i])),
-                                       new SqlParameter("@PAYMENTMETHOD", PAYMENTMETHOD),
-                                       new SqlParameter("@REFERENCENO", REFERENCENO),
-                                       new SqlParameter("@DATETIME", DATETIME)};
+                                           new SqlParameter("@PAYMENTAMMOUNT", Convert.ToDecimal(PAYMENTAMMOUNTList[i])),
+                                           new SqlParameter("@PAYMENTMETHOD", PAYMENTMETHOD),
+                                           new SqlParameter("@REFERENCENO", REFERENCENO),
+                                           new SqlParameter("@DATETIME", DATETIME)};
                 DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Transaction_UpdateTransactionPayment", cmdParm);
                 if (ds.Tables[0].Rows.Count > 0)
                 {
@@ -886,16 +886,21 @@ namespace EzLogistic.Controllers
         public string Transaction_UpdateTransactionDetailHandling(string TRANSACTIONDETAILID, string PRODUCTHANDLINGPRICE)
         {
             string Result = "";
-            SqlParameter[] cmdParm = { new SqlParameter("@TRANSACTIONDETAILID", Convert.ToInt32(TRANSACTIONDETAILID)),
-                                           new SqlParameter("@PRODUCTHANDLINGPRICE", Convert.ToDecimal(PRODUCTHANDLINGPRICE))};
-            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Transaction_UpdateTransactionDetailHandling", cmdParm);
-            if (ds.Tables[0].Rows.Count > 0)
+            string[] TTRANSACTIONDETAILIDList = TRANSACTIONDETAILID.Split(',');
+            string[] PRODUCTHANDLINGPRICEList = PRODUCTHANDLINGPRICE.Split(',');
+            for (int i = 0; i < TTRANSACTIONDETAILIDList.Length; i++)
             {
-                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
-            }
-            else
-            {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                SqlParameter[] cmdParm = { new SqlParameter("@TRANSACTIONDETAILID", Convert.ToInt32(TTRANSACTIONDETAILIDList[i])),
+                                           new SqlParameter("@PRODUCTHANDLINGPRICE", Convert.ToDecimal(PRODUCTHANDLINGPRICEList[i]))};
+                DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Transaction_UpdateTransactionDetailHandling", cmdParm);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+                }
+                else
+                {
+                    Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                }
             }
             return Result;
         }
