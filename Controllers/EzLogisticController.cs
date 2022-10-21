@@ -74,19 +74,17 @@ namespace EzLogistic.Controllers
 
         [HttpGet]
         [Route("api/EzLogistic/User_Register")]
-        public string User_Register(string USERCODE, string USERAREAID, string USERNAME, string FULLNAME, string PASSWORD, string CONTACTNO, string USEREMAIL, string USERADDRESS, string USERLAT, string USERLONG)
+        public string User_Register(string USERAREAID, string USERNAME, string FULLNAME, string PASSWORD, string CONTACTNO, string USEREMAIL, string USERNICKNAME, string USERWECHATID)
         {
             string Result = "";
-            SqlParameter[] cmdParm = { new SqlParameter("@USERCODE", USERCODE),
-                                       new SqlParameter("@USERAREAID", USERAREAID),
+            SqlParameter[] cmdParm = { new SqlParameter("@USERAREAID", USERAREAID),
                                        new SqlParameter("@USERNAME", USERNAME),
                                        new SqlParameter("@FULLNAME", FULLNAME),
                                        new SqlParameter("@PASSWORD", EncryptString(PASSWORD)),
                                        new SqlParameter("@CONTACTNO", CONTACTNO),
                                        new SqlParameter("@USEREMAIL", USEREMAIL),
-                                       new SqlParameter("@USERADDRESS", USERADDRESS),
-                                       new SqlParameter("@USERLAT", Convert.ToDecimal(USERLAT)),
-                                       new SqlParameter("@USERLONG", Convert.ToDecimal(USERLONG))};
+                                       new SqlParameter("@USERNICKNAME", USERNICKNAME),
+                                       new SqlParameter("@USERWECHATID", USERWECHATID)};
             DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.User_Register", cmdParm);
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -398,6 +396,144 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
+        [Route("api/EzLogistic/Notification_AddNotification")]
+        public string Notification_AddNotification(string NOTIFICATIONTITLE, string NOTIFICATIONDESC, string MODIFY)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONTITLE", NOTIFICATIONTITLE),
+                                       new SqlParameter("@NOTIFICATIONDESC", NOTIFICATIONDESC),
+                                       new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_AddNotification", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/EzLogistic/Notification_UpdateNotification")]
+        public string Notification_UpdateNotification(string NOTIFICATIONID, string NOTIFICATIONTITLE, string NOTIFICATIONDESC, string MODIFY)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONID", Convert.ToInt32(NOTIFICATIONID)),
+                                       new SqlParameter("@NOTIFICATIONTITLE", NOTIFICATIONTITLE),
+                                       new SqlParameter("@NOTIFICATIONDESC", NOTIFICATIONDESC),
+                                       new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_UpdateNotification", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/EzLogistic/Notification_DeleteNotification")]
+        public string Notification_DeleteNotification(string NOTIFICATIONID, string MODIFY)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONID", Convert.ToInt32(NOTIFICATIONID)),
+                                       new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_DeleteNotification", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/EzLogistic/Notification_ViewNotification")]
+        public string Notification_ViewNotification()
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = {};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_ViewNotification", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/EzLogistic/Container_AddContainer")]
+        public string Container_AddContainer(string CONTAINERNAME, string CONTAINERDATE, string MODIFY)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@CONTAINERNAME", CONTAINERNAME),
+                                       new SqlParameter("@CONTAINERDATE", CONTAINERDATE),
+                                       new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Container_AddContainer", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/EzLogistic/Container_UpdateContainer")]
+        public string Container_UpdateContainer(string CONTAINERID, string CONTAINERNAME, string CONTAINERDATE, string MODIFY)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@CONTAINERID", Convert.ToInt32(CONTAINERID)),
+                                       new SqlParameter("@CONTAINERNAME", CONTAINERNAME),
+                                       new SqlParameter("@CONTAINERDATE", CONTAINERDATE),
+                                       new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Container_UpdateContainer", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/EzLogistic/Container_DeleteContainer")]
+        public string Container_DeleteContainer(string CONTAINERID, string MODIFY)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@CONTAINERID", Convert.ToInt32(CONTAINERID)),
+                                       new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Container_DeleteContainer", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
         [Route("api/EzLogistic/Container_ViewContainer")]
         public string Container_ViewContainer()
         {
@@ -415,6 +551,43 @@ namespace EzLogistic.Controllers
             return Result;
         }
 
+        [HttpGet]
+        [Route("api/EzLogistic/Container_ViewContainerStatus")]
+        public string Container_ViewContainerStatus()
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { };
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Container_ViewContainerStatus", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/EzLogistic/Courier_ViewCourier")]
+        public string Courier_ViewCourier()
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { };
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Courier_ViewCourier", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        
 
         [HttpGet]
         [Route("api/EzLogistic/Inventory_ViewStockList")]
@@ -452,6 +625,26 @@ namespace EzLogistic.Controllers
             }
             return Result;
         }
+
+        [HttpGet]
+        [Route("api/EzLogistic/Inventory_ViewStockByFilter")]
+        public string Inventory_ViewStockByFilter(string FILTERCOLUMN)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@FILTERCOLUMN", FILTERCOLUMN)};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Inventory_ViewStockByFilter", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        
 
         [HttpGet]
         [Route("api/EzLogistic/Inventory_ViewStockListByDate")]
@@ -494,6 +687,53 @@ namespace EzLogistic.Controllers
                                        new SqlParameter("@REMARK", REMARK),
                                        new SqlParameter("@EXTRACHARGE", EXTRACHARGE)};
             DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Inventory_UpdateStockDetail", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/EzLogistic/Inventory_UpdateStock")]
+        public string Inventory_UpdateStock(string STOCKID, string USERCODE, string TRACKINGNUMBER, string PRODUCTWEIGHT, string PRODUCTHEIGHT, string PRODUCTWIDTH, string PRODUCTDEEP, string ITEM, string REMARK, string COURIERID, string MODIFY)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@STOCKID", Convert.ToInt32(STOCKID)),
+                                       new SqlParameter("@USERCODE", USERCODE),
+                                       new SqlParameter("@TRACKINGNUMBER", TRACKINGNUMBER),
+                                       new SqlParameter("@PRODUCTWEIGHT", Convert.ToDecimal(PRODUCTWEIGHT)),
+                                       new SqlParameter("@PRODUCTHEIGHT", Convert.ToDecimal(PRODUCTHEIGHT)),
+                                       new SqlParameter("@PRODUCTWIDTH", Convert.ToDecimal(PRODUCTWIDTH)),
+                                       new SqlParameter("@PRODUCTDEEP", Convert.ToDecimal(PRODUCTDEEP)),
+                                       new SqlParameter("@ITEM", ITEM),
+                                       new SqlParameter("@REMARK", REMARK),
+                                       new SqlParameter("@COURIERID", Convert.ToInt32(COURIERID)),
+                                       new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Inventory_UpdateStock", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/EzLogistic/Inventory_DeleteStock")]
+        public string Inventory_DeleteStock(string STOCKID, string MODIFY)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@STOCKID", Convert.ToInt32(STOCKID)),
+                                       new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Inventory_DeleteStock", cmdParm);
             if (ds.Tables[0].Rows.Count > 0)
             {
                 Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
@@ -580,6 +820,68 @@ namespace EzLogistic.Controllers
             else
             {
                 Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/EzLogistic/Inventory_UpdateStockContainer")]
+        public string Inventory_UpdateStockContainer(string STOCKID, string CONTAINERID)
+        {
+            string Result = "";
+            string[] STOCKIDs = STOCKID.Split(',');
+            for (int i = 0; i < STOCKIDs.Length; i++)
+            {
+                SqlParameter[] cmdParm = { new SqlParameter("@STOCKID", STOCKIDs[i]),
+                                       new SqlParameter("@CONTAINERID", CONTAINERID)};
+                DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Inventory_UpdateStockContainer", cmdParm);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+                }
+                else
+                {
+                    Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                }
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/EzLogistic/Inventory_AddStock")]
+        public string Inventory_AddStock(string USERCODE, string TRACKINGNUMBER, string PRODUCTWEIGHT, string PRODUCTHEIGHT, string PRODUCTWIDTH, string PRODUCTDEEP, string ITEM, string REMARK, string COURIERID, string MODIFY)
+        {
+            string Result = "";
+            string[] USERCODEs = USERCODE.Split(',');
+            string[] TRACKINGNUMBERs = TRACKINGNUMBER.Split(',');
+            string[] PRODUCTWEIGHTs = PRODUCTWEIGHT.Split(',');
+            string[] PRODUCTHEIGHTs = PRODUCTHEIGHT.Split(',');
+            string[] PRODUCTWIDTHs = PRODUCTWIDTH.Split(',');
+            string[] PRODUCTDEEPs = PRODUCTDEEP.Split(',');
+            string[] ITEMs = ITEM.Split(',');
+            string[] REMARKs = REMARK.Split(',');
+            string[] COURIERIDs = COURIERID.Split(',');
+            for (int i = 0; i < USERCODEs.Length; i++)
+            {
+                SqlParameter[] cmdParm = { new SqlParameter("@USERCODE", USERCODEs[i]),
+                                       new SqlParameter("@TRACKINGNUMBER", TRACKINGNUMBERs[i]),
+                                       new SqlParameter("@PRODUCTWEIGHT", Convert.ToDecimal(PRODUCTWEIGHTs[i])),
+                                       new SqlParameter("@PRODUCTHEIGHT", Convert.ToDecimal(PRODUCTHEIGHTs[i])),
+                                       new SqlParameter("@PRODUCTWIDTH", Convert.ToDecimal(PRODUCTWIDTHs[i])),
+                                       new SqlParameter("@PRODUCTDEEP", Convert.ToDecimal(PRODUCTDEEPs[i])),
+                                       new SqlParameter("@ITEM", ITEMs[i]),
+                                       new SqlParameter("@REMARK", REMARKs[i]),
+                                       new SqlParameter("@COURIERID", COURIERIDs[i]),
+                                       new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
+                DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Inventory_AddStock", cmdParm);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+                }
+                else
+                {
+                    Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                }
             }
             return Result;
         }
@@ -1009,17 +1311,14 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/User_InsertAreaCode")]
-        public string User_InsertAreaCode(string AREACODE, string AREANAME, string AGENDIND, string USERID, string MINIMUMCUBIC, string AREACHARGES)
+        [Route("api/EzLogistic/User_AddUserAreaCode")]
+        public string User_AddUserAreaCode(string AREACODE, string AREANAME, string MODIFY)
         {
             string Result = "";
             SqlParameter[] cmdParm = { new SqlParameter("@AREACODE", AREACODE),
                                        new SqlParameter("@AREANAME", AREANAME),
-                                       new SqlParameter("@AGENDIND", Convert.ToInt32(AGENDIND)),
-                                       new SqlParameter("@USERID", Convert.ToInt32(USERID)),
-                                       new SqlParameter("@MINIMUMCUBIC", Convert.ToDecimal(MINIMUMCUBIC)),
-                                       new SqlParameter("@AREACHARGES", Convert.ToDecimal(AREACHARGES))};
-            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.User_InsertAreaCode", cmdParm);
+                                       new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.User_AddUserAreaCode", cmdParm);
             if (ds.Tables[0].Rows.Count > 0)
             {
                 Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
@@ -1030,6 +1329,49 @@ namespace EzLogistic.Controllers
             }
             return Result;
         }
+
+        [HttpGet]
+        [Route("api/EzLogistic/User_UpdateUserAreaCode")]
+        public string User_UpdateUserAreaCode(string USERAREAID, string AREACODE, string AREANAME, string MODIFY)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@USERAREAID", Convert.ToInt32(USERAREAID)),
+                                       new SqlParameter("@AREACODE", AREACODE),
+                                       new SqlParameter("@AREANAME", AREANAME),
+                                       new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.User_UpdateUserAreaCode", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/EzLogistic/User_DeleteUserAreaCode")]
+        public string User_DeleteUserAreaCode(string USERAREAID, string MODIFY)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@USERAREAID", Convert.ToInt32(USERAREAID)),
+                                       new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.User_DeleteUserAreaCode", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+
+        
 
         [HttpGet]
         [Route("api/EzLogistic/User_UpdateAreaCode")]
