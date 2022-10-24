@@ -53,6 +53,41 @@ namespace EzLogistic.Controllers
             return hashString.PadLeft(32, '0');
         }
 
+        public string ReturnDataSet(DataSet ds)
+        {
+            string Result = "";
+            DataSet dsReturn = new DataSet();
+            dsReturn.Tables.Add(new DataTable());
+            dsReturn.Tables[0].Columns.Add("ReturnVal", typeof(System.Int32));
+            dsReturn.Tables[0].Columns.Add("ReturnMsg");
+            dsReturn.Tables[0].Columns.Add("ReturnID");
+            dsReturn.Tables[0].Columns.Add("ReturnData");
+            dsReturn.Tables[0].Columns.Add("ReturnSqlError");
+            if (ds.Tables[0].Rows[0]["ReturnVal"].ToString() == "1")
+            {
+                if (ds.Tables[1].Rows.Count > 0)
+                {
+                    DataRow dr = dsReturn.Tables[0].NewRow();
+                    dr["ReturnVal"] = Convert.ToInt32(ds.Tables[0].Rows[0]["ReturnVal"]);
+                    dr["ReturnMsg"] = ds.Tables[0].Rows[0]["ReturnMsg"].ToString();
+                    dr["ReturnID"] = ds.Tables[1].Rows.Count.ToString();
+                    dr["ReturnData"] = DataTableToJSONWithJavaScriptSerializer(ds.Tables[1]);
+                    dr["ReturnSqlError"] = "";
+                    dsReturn.Tables[0].Rows.Add(dr);
+                    Result = DataTableToJSONWithJavaScriptSerializer(dsReturn.Tables[0]);
+                }
+                else
+                {
+                    Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\",\"ReturnID\":0,\"ReturnData\":\"[]\",\"ReturnSqlError\":\"\"}]";
+                }
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + error_msg + "\",\"ReturnID\":\"0\",\"ReturnData\":\"[]\",\"ReturnSqlError\":\"" + ds.Tables[0].Rows[0]["ReturnMsg"].ToString() + "\"}]";
+            }
+            return Result;
+        }
+
         [HttpGet]
         [Route("api/EzLogistic/User_Login")]
         public string User_Login(string username, string password)
@@ -67,7 +102,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -92,7 +127,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -188,7 +223,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -221,7 +256,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -239,7 +274,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -258,7 +293,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -288,7 +323,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -301,15 +336,7 @@ namespace EzLogistic.Controllers
             SqlParameter[] cmdParm = { new SqlParameter("@USERID", Convert.ToInt32(USERID)),
                                        new SqlParameter("@USERPASSWORD", EncryptString(USERPASSWORD)) };
             DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.User_UpdateUserPassword", cmdParm);
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
-            }
-            else
-            {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
-            }
-            return Result;
+            return ReturnDataSet(ds);
         }
 
         [HttpGet]
@@ -325,7 +352,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -371,7 +398,25 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/EzLogistic/User_ViewProfileByUserCode")]
+        public string User_ViewProfileByUserCode(string USERCODE)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@USERCODE", USERCODE) };
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.User_ViewProfileByUserCode", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -390,48 +435,64 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
 
         [HttpGet]
         [Route("api/EzLogistic/Notification_AddNotification")]
-        public string Notification_AddNotification(string NOTIFICATIONTITLE, string NOTIFICATIONDESC, string MODIFY)
+        public string Notification_AddNotification(string NOTIFICATIONTITLE, string NOTIFICATIONDESC, string NOTIFICATIONSTATUSID, string MODIFY)
         {
             string Result = "";
             SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONTITLE", NOTIFICATIONTITLE),
                                        new SqlParameter("@NOTIFICATIONDESC", NOTIFICATIONDESC),
+                                       new SqlParameter("@NOTIFICATIONSTATUSID", NOTIFICATIONSTATUSID),
                                        new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
             DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_AddNotification", cmdParm);
             if (ds.Tables[0].Rows.Count > 0)
             {
+                if (ds.Tables[0].Rows[0]["SendInd"].ToString() == "1")
+                {
+                    for(int i = 0; i < ds.Tables[1].Rows.Count; i++)
+                    {
+                        General_TriggerEmail(ds.Tables[0].Rows[0]["Title"].ToString(), ds.Tables[0].Rows[0]["Content"].ToString(), ds.Tables[1].Rows[i]["UserEmailAddress"].ToString());
+                    }
+                }
                 Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
 
         [HttpGet]
         [Route("api/EzLogistic/Notification_UpdateNotification")]
-        public string Notification_UpdateNotification(string NOTIFICATIONID, string NOTIFICATIONTITLE, string NOTIFICATIONDESC, string MODIFY)
+        public string Notification_UpdateNotification(string NOTIFICATIONID, string NOTIFICATIONTITLE, string NOTIFICATIONDESC, string NOTIFICATIONSTATUSID, string MODIFY)
         {
             string Result = "";
             SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONID", Convert.ToInt32(NOTIFICATIONID)),
                                        new SqlParameter("@NOTIFICATIONTITLE", NOTIFICATIONTITLE),
                                        new SqlParameter("@NOTIFICATIONDESC", NOTIFICATIONDESC),
+                                       new SqlParameter("@NOTIFICATIONSTATUSID", NOTIFICATIONSTATUSID),
                                        new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
             DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_UpdateNotification", cmdParm);
             if (ds.Tables[0].Rows.Count > 0)
             {
+                if (ds.Tables[0].Rows[0]["SendInd"].ToString() == "1")
+                {
+                    for (int i = 0; i < ds.Tables[1].Rows.Count; i++)
+                    {
+                        General_TriggerEmail(ds.Tables[0].Rows[0]["Title"].ToString(), ds.Tables[0].Rows[0]["Content"].ToString(), ds.Tables[1].Rows[i]["UserEmailAddress"].ToString());
+                    }
+                }
                 Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -450,27 +511,19 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
 
         [HttpGet]
         [Route("api/EzLogistic/Notification_ViewNotification")]
-        public string Notification_ViewNotification()
+        public string Notification_ViewNotification(string NOTIFICATIONSTATUSID)
         {
             string Result = "";
-            SqlParameter[] cmdParm = {};
+            SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONSTATUSID", Convert.ToInt32(NOTIFICATIONSTATUSID))};
             DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_ViewNotification", cmdParm);
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
-            }
-            else
-            {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
-            }
-            return Result;
+            return ReturnDataSet(ds);
         }
 
         [HttpGet]
@@ -488,19 +541,20 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
 
         [HttpGet]
         [Route("api/EzLogistic/Container_UpdateContainer")]
-        public string Container_UpdateContainer(string CONTAINERID, string CONTAINERNAME, string CONTAINERDATE, string MODIFY)
+        public string Container_UpdateContainer(string CONTAINERID, string CONTAINERNAME, string CONTAINERREMARK, string CONTAINERDATE, string MODIFY)
         {
             string Result = "";
             SqlParameter[] cmdParm = { new SqlParameter("@CONTAINERID", Convert.ToInt32(CONTAINERID)),
                                        new SqlParameter("@CONTAINERNAME", CONTAINERNAME),
                                        new SqlParameter("@CONTAINERDATE", CONTAINERDATE),
+                                       new SqlParameter("@CONTAINERREMARK", CONTAINERREMARK),
                                        new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
             DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Container_UpdateContainer", cmdParm);
             if (ds.Tables[0].Rows.Count > 0)
@@ -509,7 +563,27 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/EzLogistic/Container_UpdateContainerStatus")]
+        public string Container_UpdateContainerStatus(string CONTAINERID, string CONTAINERSTATUSID, string MODIFY)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@CONTAINERID", Convert.ToInt32(CONTAINERID)),
+                                       new SqlParameter("@CONTAINERSTATUSID", Convert.ToInt32(CONTAINERSTATUSID)),
+                                       new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Container_UpdateContainerStatus", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -528,7 +602,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -546,7 +620,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -564,7 +638,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -582,7 +656,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -602,7 +676,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -621,7 +695,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -639,12 +713,21 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
 
-        
+        [HttpGet]
+        [Route("api/EzLogistic/Inventory_ViewStockByFilter2")]
+        public string Inventory_ViewStockByFilter2(string FILTERCOLUMN)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@FILTERCOLUMN", FILTERCOLUMN) };
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Inventory_ViewStockByFilter2", cmdParm);
+            return ReturnDataSet(ds);
+        }
+
 
         [HttpGet]
         [Route("api/EzLogistic/Inventory_ViewStockListByDate")]
@@ -662,7 +745,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -693,7 +776,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -721,7 +804,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -740,7 +823,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -789,7 +872,7 @@ namespace EzLogistic.Controllers
                     }
                     else
                     {
-                        Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                        Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
                     }
                 }
                 var response = new HttpResponseMessage(HttpStatusCode.Created)
@@ -819,7 +902,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -841,7 +924,7 @@ namespace EzLogistic.Controllers
                 }
                 else
                 {
-                    Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                    Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
                 }
             }
             return Result;
@@ -880,7 +963,7 @@ namespace EzLogistic.Controllers
                 }
                 else
                 {
-                    Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                    Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
                 }
             }
             return Result;
@@ -910,7 +993,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -964,7 +1047,7 @@ namespace EzLogistic.Controllers
                 {
                     if (ds.Tables[0].Rows[0]["ReturnVal"].ToString() == "0")
                     {
-                        Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + ds.Tables[0].Rows[0]["ReturnMsg"].ToString() + "\"}]";
+                        Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + ds.Tables[0].Rows[0]["ReturnMsg"].ToString() + "\"}]";
                     }
                     else
                     {
@@ -999,7 +1082,7 @@ namespace EzLogistic.Controllers
                 }
                 else
                 {
-                    Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                    Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
                 }
                 var response = new HttpResponseMessage(HttpStatusCode.Created)
                 {
@@ -1089,7 +1172,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -1150,7 +1233,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -1177,7 +1260,7 @@ namespace EzLogistic.Controllers
                 }
                 else
                 {
-                    Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                    Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
                 }
             }
             return Result;
@@ -1201,7 +1284,7 @@ namespace EzLogistic.Controllers
                 }
                 else
                 {
-                    Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                    Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
                 }
             }
             return Result;
@@ -1221,7 +1304,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -1240,7 +1323,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -1304,7 +1387,7 @@ namespace EzLogistic.Controllers
                 }
                 else
                 {
-                    Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                    Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
                 }
             }
             return Result;
@@ -1325,7 +1408,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -1346,7 +1429,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -1365,7 +1448,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -1392,7 +1475,7 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
@@ -1410,9 +1493,81 @@ namespace EzLogistic.Controllers
             }
             else
             {
-                Result = "[{\"ReturnVal\":\"0\",\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
         }
+
+        [HttpGet]
+        [Route("api/EzLogistic/Report_ViewStockSummary")]
+        public string Report_ViewStockSummary()
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { };
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Report_ViewStockSummary", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/EzLogistic/Inventory_UpdateStockUser")]
+        public string Inventory_UpdateStockUser(string STOCKID, string USERID)
+        {
+            string Result = "";
+            string[] STOCKIDs = STOCKID.Split(',');
+            for (int i = 0; i < STOCKIDs.Length; i++)
+            {
+                SqlParameter[] cmdParm = { new SqlParameter("@STOCKID", STOCKIDs[i]),
+                                           new SqlParameter("@USERID", Convert.ToInt32(USERID))};
+                DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Inventory_UpdateStockUser", cmdParm);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+                }
+                else
+                {
+                    Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                }
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/EzLogistic/User_ViewGeneralSetting")]
+        public string User_ViewGeneralSetting(string USERID)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@USERID", Convert.ToInt32(USERID))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.User_ViewGeneralSetting", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/YHGApi/General_TriggerEmail")]
+        public string General_TriggerEmail(string SUBJECT, string BODY, string RECIPIENTS)
+        {
+            DataSet ds = new DataSet();
+            SqlParameter[] cmdParm = { new SqlParameter("@SUBJECT", SUBJECT),
+                                       new SqlParameter("@BODY", BODY),
+                                       new SqlParameter("@RECIPIENTS", RECIPIENTS)};
+            ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.General_TriggerEmail", cmdParm);
+            return ReturnDataSet(ds);
+        }
+
     }
 }
