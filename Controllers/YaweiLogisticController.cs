@@ -8,11 +8,11 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Script.Serialization;
 
-namespace EzLogistic.Controllers
+namespace YaweiLogistic.Controllers
 {
-    public class EzLogisticController : ApiController
+    public class YaweiLogisticController : ApiController
     {
-        public string constr_tour = ConfigurationManager.ConnectionStrings["EZLOGISTIC"].ConnectionString;
+        public string constr_tour = ConfigurationManager.ConnectionStrings["YAWEILOGISTIC"].ConnectionString;
         public string no_data_msg = "Sorry, there is no datas found!";
         public string error_msg = "Sorry, there is an error!";
         public string DataTableToJSONWithJavaScriptSerializer(DataTable table)
@@ -89,7 +89,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/User_Login")]
+        [Route("api/YaweiLogistic/User_Login")]
         public string User_Login(string username, string password)
         {
             string Result = "";
@@ -108,7 +108,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/User_Register")]
+        [Route("api/YaweiLogistic/User_Register")]
         public string User_Register(string USERAREAID, string USERNAME, string FULLNAME, string PASSWORD, string CONTACTNO, string USEREMAIL, string USERNICKNAME, string USERWECHATID)
         {
             string Result = "";
@@ -149,7 +149,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpPost]
-        [Route("api/EzLogistic/User_RegisterUsersByPost")]
+        [Route("api/YaweiLogistic/User_RegisterUsersByPost")]
         public HttpResponseMessage User_RegisterUsersByPost([FromBody] User User)
         {
             try
@@ -207,7 +207,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/User_RegisterSimplify")]
+        [Route("api/YaweiLogistic/User_RegisterSimplify")]
         public string User_RegisterSimplify(string USERCODE, string USERAREAID, string USERNAME, string PASSWORD, string CONTACTNO)
         {
             string Result = "";
@@ -229,7 +229,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/User_ViewPage")]
+        [Route("api/YaweiLogistic/User_ViewPage")]
         public string User_ViewPage(string ROLEGROUPID, string USERID)
         {
             string Result = "";
@@ -262,7 +262,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/User_ViewAreaCode")]
+        [Route("api/YaweiLogistic/User_ViewAreaCode")]
         public string User_ViewAreaCode()
         {
             string Result = "";
@@ -281,7 +281,7 @@ namespace EzLogistic.Controllers
 
 
         [HttpGet]
-        [Route("api/EzLogistic/User_ViewProfile")]
+        [Route("api/YaweiLogistic/User_ViewProfile")]
         public string User_Profile()
         {
             string Result = "";
@@ -299,7 +299,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/User_UpdateUserProfile")]
+        [Route("api/YaweiLogistic/User_UpdateUserProfile")]
         public string User_UpdateUserProfile(string USERID, string USERCODE, string USERAREAID, string FULLNAME, string CONTACTNO, string USEREMAIL, string USERADDRESS, string MINSELFPICKUPPRICE, string CUBICSELFPICKUPPRICE, string CONSOLIDATEPRICE, string DELIVERYCARGO, string DELIVERYFIRSTPRICE, string DELIVERYSUBPRICE)
         {
             string Result = "";
@@ -329,7 +329,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/User_UpdateUserPassword")]
+        [Route("api/YaweiLogistic/User_UpdateUserPassword")]
         public string User_UpdateUserPassword(string USERID, string USERPASSWORD)
         {
             string Result = "";
@@ -340,7 +340,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/User_DeleteUserProfile")]
+        [Route("api/YaweiLogistic/User_DeleteUserProfile")]
         public string User_DeleteUserProfile(string USERID)
         {
             string Result = "";
@@ -358,7 +358,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/User_ViewProfileByID")]
+        [Route("api/YaweiLogistic/User_ViewProfileByID")]
         public string User_ProfileByID(string USERID)
         {
             string Result = "";
@@ -404,7 +404,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/User_ViewProfileByUserCode")]
+        [Route("api/YaweiLogistic/User_ViewProfileByUserCode")]
         public string User_ViewProfileByUserCode(string USERCODE)
         {
             string Result = "";
@@ -422,7 +422,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Container_InsertNewContainer")]
+        [Route("api/YaweiLogistic/Container_InsertNewContainer")]
         public string Container_InsertNewContainer(string CONTAINERNAME, string CONTAINERDATE)
         {
             string Result = "";
@@ -441,7 +441,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Notification_AddNotification")]
+        [Route("api/YaweiLogistic/Notification_AddNotification")]
         public string Notification_AddNotification(string NOTIFICATIONTITLE, string NOTIFICATIONDESC, string NOTIFICATIONSTATUSID, string MODIFY)
         {
             string Result = "";
@@ -469,7 +469,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Notification_UpdateNotification")]
+        [Route("api/YaweiLogistic/Notification_UpdateNotification")]
         public string Notification_UpdateNotification(string NOTIFICATIONID, string NOTIFICATIONTITLE, string NOTIFICATIONDESC, string NOTIFICATIONSTATUSID, string MODIFY)
         {
             string Result = "";
@@ -498,7 +498,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Notification_DeleteNotification")]
+        [Route("api/YaweiLogistic/Notification_DeleteNotification")]
         public string Notification_DeleteNotification(string NOTIFICATIONID, string MODIFY)
         {
             string Result = "";
@@ -517,7 +517,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Notification_ViewNotification")]
+        [Route("api/YaweiLogistic/Notification_ViewNotification")]
         public string Notification_ViewNotification(string NOTIFICATIONSTATUSID)
         {
             string Result = "";
@@ -527,7 +527,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Container_AddContainer")]
+        [Route("api/YaweiLogistic/Container_AddContainer")]
         public string Container_AddContainer(string CONTAINERNAME, string CONTAINERDATE, string MODIFY)
         {
             string Result = "";
@@ -547,7 +547,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Container_UpdateContainer")]
+        [Route("api/YaweiLogistic/Container_UpdateContainer")]
         public string Container_UpdateContainer(string CONTAINERID, string CONTAINERNAME, string CONTAINERREMARK, string CONTAINERDATE, string MODIFY)
         {
             string Result = "";
@@ -569,7 +569,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Container_UpdateContainerStatus")]
+        [Route("api/YaweiLogistic/Container_UpdateContainerStatus")]
         public string Container_UpdateContainerStatus(string CONTAINERID, string CONTAINERSTATUSID, string MODIFY)
         {
             string Result = "";
@@ -589,7 +589,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Container_DeleteContainer")]
+        [Route("api/YaweiLogistic/Container_DeleteContainer")]
         public string Container_DeleteContainer(string CONTAINERID, string MODIFY)
         {
             string Result = "";
@@ -608,7 +608,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Container_ViewContainer")]
+        [Route("api/YaweiLogistic/Container_ViewContainer")]
         public string Container_ViewContainer()
         {
             string Result = "";
@@ -626,7 +626,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Container_ViewContainerStatus")]
+        [Route("api/YaweiLogistic/Container_ViewContainerStatus")]
         public string Container_ViewContainerStatus()
         {
             string Result = "";
@@ -644,7 +644,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Courier_ViewCourier")]
+        [Route("api/YaweiLogistic/Courier_ViewCourier")]
         public string Courier_ViewCourier()
         {
             string Result = "";
@@ -664,7 +664,7 @@ namespace EzLogistic.Controllers
         
 
         [HttpGet]
-        [Route("api/EzLogistic/Inventory_ViewStockList")]
+        [Route("api/YaweiLogistic/Inventory_ViewStockList")]
         public string Inventory_ViewStockList(string TRACKINGSTATUSID)
         {
             string Result = "";
@@ -682,7 +682,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Inventory_ViewStockListByFilter")]
+        [Route("api/YaweiLogistic/Inventory_ViewStockListByFilter")]
         public string Inventory_ViewStockListByFilter(string FILTERCOLUMN, string FILTERKEYWORD)
         {
             string Result = "";
@@ -701,7 +701,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Inventory_ViewStockByFilter")]
+        [Route("api/YaweiLogistic/Inventory_ViewStockByFilter")]
         public string Inventory_ViewStockByFilter(string FILTERCOLUMN)
         {
             string Result = "";
@@ -719,7 +719,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Inventory_ViewStockByFilter2")]
+        [Route("api/YaweiLogistic/Inventory_ViewStockByFilter2")]
         public string Inventory_ViewStockByFilter2(string FILTERCOLUMN)
         {
             string Result = "";
@@ -730,7 +730,7 @@ namespace EzLogistic.Controllers
 
 
         [HttpGet]
-        [Route("api/EzLogistic/Inventory_ViewStockListByDate")]
+        [Route("api/YaweiLogistic/Inventory_ViewStockListByDate")]
         public string Inventory_ViewStockListByDate(string STARTDATE, string ENDDATE)
         {
             string Result = "";
@@ -751,7 +751,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Inventory_UpdateStockDetail")]
+        [Route("api/YaweiLogistic/Inventory_UpdateStockDetail")]
         public string Inventory_UpdateStockDetail(string STOCKID, string USERCODE, string TRACKINGNUMBER, string PRODUCTWEIGHT, string PRODUCTHEIGHT, string PRODUCTWIDTH, string PRODUCTDEEP, string AREACODE, string ITEM, string TRACKINGSTATUSID, string CONTAINERNAME, string CONTAINERDATE, string REMARK, string EXTRACHARGE)
         {
             string Result = "";
@@ -782,7 +782,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Inventory_UpdateStock")]
+        [Route("api/YaweiLogistic/Inventory_UpdateStock")]
         public string Inventory_UpdateStock(string STOCKID, string USERCODE, string TRACKINGNUMBER, string PRODUCTWEIGHT, string PRODUCTHEIGHT, string PRODUCTWIDTH, string PRODUCTDEEP, string ITEM, string REMARK, string COURIERID, string MODIFY)
         {
             string Result = "";
@@ -810,7 +810,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Inventory_DeleteStock")]
+        [Route("api/YaweiLogistic/Inventory_DeleteStock")]
         public string Inventory_DeleteStock(string STOCKID, string MODIFY)
         {
             string Result = "";
@@ -829,7 +829,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpPost]
-        [Route("api/EzLogistic/Inventory_UpdateStockDetailByPost")]
+        [Route("api/YaweiLogistic/Inventory_UpdateStockDetailByPost")]
         public HttpResponseMessage Inventory_UpdateStockDetailByPost([FromBody] Stock Stock)
         {
             try
@@ -889,7 +889,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Inventory_UpdateStockStatus")]
+        [Route("api/YaweiLogistic/Inventory_UpdateStockStatus")]
         public string Inventory_UpdateStockStatus(string STOCKID, string CONTAINERID)
         {
             string Result = "";
@@ -908,7 +908,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Inventory_UpdateStockContainer")]
+        [Route("api/YaweiLogistic/Inventory_UpdateStockContainer")]
         public string Inventory_UpdateStockContainer(string STOCKID, string CONTAINERID)
         {
             string Result = "";
@@ -931,7 +931,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Inventory_AddStock")]
+        [Route("api/YaweiLogistic/Inventory_AddStock")]
         public string Inventory_AddStock(string USERCODE, string TRACKINGNUMBER, string PRODUCTWEIGHT, string PRODUCTHEIGHT, string PRODUCTWIDTH, string PRODUCTDEEP, string ITEM, string REMARK, string COURIERID, string MODIFY)
         {
             string Result = "";
@@ -970,7 +970,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Inventory_InsertStock")]
+        [Route("api/YaweiLogistic/Inventory_InsertStock")]
         public string Inventory_InsertStock(string USERCODE, string TRACKINGNUMBER, string PRODUCTWEIGHT, string PRODUCTHEIGHT, string PRODUCTWIDTH, string PRODUCTDEEP, string AREACODE, string ITEM, string STOCKDATE, string PACKAGINGDATE, string REMARK, string EXTRACHARGE)
         {
             string Result = "";
@@ -1022,7 +1022,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpPost]
-        [Route("api/EzLogistic/Inventory_InsertStockByPost")]
+        [Route("api/YaweiLogistic/Inventory_InsertStockByPost")]
         public HttpResponseMessage Inventory_InsertStockByPost([FromBody] Stock Stock)
         {
             try
@@ -1098,7 +1098,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Transaction_InsertTransaction")]
+        [Route("api/YaweiLogistic/Transaction_InsertTransaction")]
         public string Transaction_InsertTransaction(string USERID, string CALCULATIONTYPE, string DELIVERYFEE, string ORDERTOTALMOUNT, string ORDERSUBTOTALMOUNT, string ORDERPAIDMOUNT, string FIRSTKG, string SUBSEQUENCEKG, string STOCKID, string PRODUCTPRICE, string PRODUCTQUANTITY, string PRODUCTDIMENSION, string PRODUCTUNITPRICE)
         {
             string Result = "";
@@ -1149,7 +1149,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Transaction_ViewTransaction")]
+        [Route("api/YaweiLogistic/Transaction_ViewTransaction")]
         public string Transaction_ViewTransaction(string TrackingStatusID)
         {
             string Result = "";
@@ -1178,7 +1178,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Transaction_ViewTransactionByID")]
+        [Route("api/YaweiLogistic/Transaction_ViewTransactionByID")]
         public string Transaction_ViewTransactionByID(string TRANSACTIONID)
         {
             string Result = "";
@@ -1219,7 +1219,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Transaction_UpdateTransactionStatus")]
+        [Route("api/YaweiLogistic/Transaction_UpdateTransactionStatus")]
         public string Transaction_UpdateTransactionStatus(string TRANSACTIONID, string TRANSPORTATIONTYPE, string DELIVERYFEE)
         {
             string Result = "";
@@ -1239,7 +1239,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Transaction_UpdateTransactionPayment")]
+        [Route("api/YaweiLogistic/Transaction_UpdateTransactionPayment")]
         public string Transaction_UpdateTransactionPayment(string TRANSACTIONID, string PAYMENTAMMOUNT, string PAYMENTMETHOD, string REFERENCENO, string DATETIME)
         {
             string Result = "";
@@ -1267,7 +1267,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Transaction_UpdateTransactionDetailHandling")]
+        [Route("api/YaweiLogistic/Transaction_UpdateTransactionDetailHandling")]
         public string Transaction_UpdateTransactionDetailHandling(string TRANSACTIONDETAILID, string PRODUCTHANDLINGPRICE)
         {
             string Result = "";
@@ -1291,7 +1291,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Transaction_ViewArchiveTransaction")]
+        [Route("api/YaweiLogistic/Transaction_ViewArchiveTransaction")]
         public string Transaction_ViewArchiveTransaction(string STARTDATE, string ENDDATE)
         {
             string Result = "";
@@ -1310,7 +1310,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Inventory_ViewArchiveStockListByDate")]
+        [Route("api/YaweiLogistic/Inventory_ViewArchiveStockListByDate")]
         public string Inventory_ViewArchiveStockListByDate(string STARTDATE, string ENDDATE)
         {
             string Result = "";
@@ -1329,7 +1329,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Dashboard_View")]
+        [Route("api/YaweiLogistic/Dashboard_View")]
         public string Dashboard_View()
         {
             string Result = "";
@@ -1371,7 +1371,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Transaction_DeleteTransaction")]
+        [Route("api/YaweiLogistic/Transaction_DeleteTransaction")]
         public string Transaction_DeleteTransaction(string TRANSACTIONID)
         {
             string Result = "";
@@ -1394,7 +1394,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/User_AddUserAreaCode")]
+        [Route("api/YaweiLogistic/User_AddUserAreaCode")]
         public string User_AddUserAreaCode(string AREACODE, string AREANAME, string MODIFY)
         {
             string Result = "";
@@ -1414,7 +1414,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/User_UpdateUserAreaCode")]
+        [Route("api/YaweiLogistic/User_UpdateUserAreaCode")]
         public string User_UpdateUserAreaCode(string USERAREAID, string AREACODE, string AREANAME, string MODIFY)
         {
             string Result = "";
@@ -1435,7 +1435,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/User_DeleteUserAreaCode")]
+        [Route("api/YaweiLogistic/User_DeleteUserAreaCode")]
         public string User_DeleteUserAreaCode(string USERAREAID, string MODIFY)
         {
             string Result = "";
@@ -1457,7 +1457,7 @@ namespace EzLogistic.Controllers
         
 
         [HttpGet]
-        [Route("api/EzLogistic/User_UpdateAreaCode")]
+        [Route("api/YaweiLogistic/User_UpdateAreaCode")]
         public string User_UpdateAreaCode(string USERAREAID, string AREACODE, string AREANAME, string AGENDIND, string USERID, string MINIMUMCUBIC, string AREACHARGES)
         {
             string Result = "";
@@ -1481,7 +1481,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/User_DeleteAreaCode")]
+        [Route("api/YaweiLogistic/User_DeleteAreaCode")]
         public string User_DeleteAreaCode(string USERAREAID)
         {
             string Result = "";
@@ -1499,7 +1499,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Report_ViewStockSummary")]
+        [Route("api/YaweiLogistic/Report_ViewStockSummary")]
         public string Report_ViewStockSummary()
         {
             string Result = "";
@@ -1517,7 +1517,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/Inventory_UpdateStockUser")]
+        [Route("api/YaweiLogistic/Inventory_UpdateStockUser")]
         public string Inventory_UpdateStockUser(string STOCKID, string USERID)
         {
             string Result = "";
@@ -1540,7 +1540,7 @@ namespace EzLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/EzLogistic/User_ViewGeneralSetting")]
+        [Route("api/YaweiLogistic/User_ViewGeneralSetting")]
         public string User_ViewGeneralSetting(string USERID)
         {
             string Result = "";

@@ -6,7 +6,7 @@ using System.Web.Services.Protocols;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace EzLogistic.Models
+namespace YaweiLogistic.Models
 {
     public class SQLHelper : System.Web.Services.WebService
     {
