@@ -521,9 +521,27 @@ namespace YaweiLogistic.Controllers
         public string Notification_ViewNotification(string NOTIFICATIONSTATUSID)
         {
             string Result = "";
-            SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONSTATUSID", Convert.ToInt32(NOTIFICATIONSTATUSID))};
+            SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONSTATUSID", Convert.ToInt32(NOTIFICATIONSTATUSID)) };
             DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_ViewNotification", cmdParm);
             return ReturnDataSet(ds);
+        }
+
+        [HttpGet]
+        [Route("api/YaweiLogistic/Notification_ViewNotification2")]
+        public string Notification_ViewNotification2(string NOTIFICATIONSTATUSID)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONSTATUSID", Convert.ToInt32(NOTIFICATIONSTATUSID))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_ViewNotification", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[1]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
         }
 
         [HttpGet]
@@ -909,14 +927,14 @@ namespace YaweiLogistic.Controllers
 
         [HttpGet]
         [Route("api/YaweiLogistic/Inventory_UpdateStockContainer")]
-        public string Inventory_UpdateStockContainer(string STOCKID, string CONTAINERID)
+        public string Inventory_UpdateStockContainer(string TRACKINGNUMBER, string CONTAINERID)
         {
             string Result = "";
-            string[] STOCKIDs = STOCKID.Split(',');
-            for (int i = 0; i < STOCKIDs.Length; i++)
+            string[] TRACKINGNUMBERs = TRACKINGNUMBER.Split(',');
+            for (int i = 0; i < TRACKINGNUMBERs.Length; i++)
             {
-                SqlParameter[] cmdParm = { new SqlParameter("@STOCKID", STOCKIDs[i]),
-                                       new SqlParameter("@CONTAINERID", CONTAINERID)};
+                SqlParameter[] cmdParm = { new SqlParameter("@TRACKINGNUMBER", TRACKINGNUMBERs[i]),
+                                           new SqlParameter("@CONTAINERID", CONTAINERID)};
                 DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Inventory_UpdateStockContainer", cmdParm);
                 if (ds.Tables[0].Rows.Count > 0)
                 {
