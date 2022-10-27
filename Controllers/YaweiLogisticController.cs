@@ -498,6 +498,26 @@ namespace YaweiLogistic.Controllers
         }
 
         [HttpGet]
+        [Route("api/YaweiLogistic/Notification_UpdateNotificationStatus")]
+        public string Notification_UpdateNotificationStatus(string NOTIFICATIONID, string NOTIFICATIONSTATUSID, string MODIFY)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONID", Convert.ToInt32(NOTIFICATIONID)),
+                                       new SqlParameter("@NOTIFICATIONSTATUSID", NOTIFICATIONSTATUSID),
+                                       new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_UpdateNotificationStatus", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
         [Route("api/YaweiLogistic/Notification_DeleteNotification")]
         public string Notification_DeleteNotification(string NOTIFICATIONID, string MODIFY)
         {
@@ -931,20 +951,25 @@ namespace YaweiLogistic.Controllers
         {
             string Result = "";
             string[] TRACKINGNUMBERs = TRACKINGNUMBER.Split(',');
+            DataSet dsReturn = new DataSet();
+            dsReturn.Tables.Add(new DataTable());
+            dsReturn.Tables[0].Columns.Add("StockID");
+            dsReturn.Tables[0].Columns.Add("TrackingNumber");
+            dsReturn.Tables[0].Columns.Add("ReturnVal");
+            dsReturn.Tables[0].Columns.Add("ReturnMsg");
             for (int i = 0; i < TRACKINGNUMBERs.Length; i++)
             {
                 SqlParameter[] cmdParm = { new SqlParameter("@TRACKINGNUMBER", TRACKINGNUMBERs[i]),
                                            new SqlParameter("@CONTAINERID", CONTAINERID)};
                 DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Inventory_UpdateStockContainer", cmdParm);
-                if (ds.Tables[0].Rows.Count > 0)
-                {
-                    Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
-                }
-                else
-                {
-                    Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
-                }
+                DataRow dr = dsReturn.Tables[0].NewRow();
+                dr["StockID"] = ds.Tables[0].Rows[0]["StockID"].ToString();
+                dr["TrackingNumber"] = TRACKINGNUMBERs[i];
+                dr["ReturnVal"] = ds.Tables[0].Rows[0]["ReturnVal"].ToString();
+                dr["ReturnMsg"] = ds.Tables[0].Rows[0]["ReturnMsg"].ToString();
+                dsReturn.Tables[0].Rows.Add(dr);
             }
+            Result = DataTableToJSONWithJavaScriptSerializer(dsReturn.Tables[0]);
             return Result;
         }
 
