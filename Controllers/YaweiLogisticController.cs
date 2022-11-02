@@ -345,15 +345,17 @@ namespace YaweiLogistic.Controllers
 
         [HttpGet]
         [Route("api/YaweiLogistic/User_UpdateUserProfile")]
-        public string User_UpdateUserProfile(string USERID, string USERCODE, string USERAREAID, string FULLNAME, string CONTACTNO, string USEREMAIL, string USERADDRESS, string MINSELFPICKUPPRICE, string CUBICSELFPICKUPPRICE, string CONSOLIDATEPRICE, string DELIVERYCARGO, string DELIVERYFIRSTPRICE, string DELIVERYSUBPRICE)
+        public string User_UpdateUserProfile(string USERID, string USERCODE, string USERAREAID, string FULLNAME, string USERWECHATID, string USERNICKNAME, string CONTACTNO, string USEREMAIL, string USERADDRESS, string MINSELFPICKUPPRICE, string CUBICSELFPICKUPPRICE, string CONSOLIDATEPRICE, string DELIVERYCARGO, string DELIVERYFIRSTPRICE, string DELIVERYSUBPRICE)
         {
             string Result = "";
             SqlParameter[] cmdParm = { new SqlParameter("@USERID", Convert.ToInt32(USERID)),
                                        new SqlParameter("@USERCODE", USERCODE),
                                        new SqlParameter("@USERAREAID", USERAREAID),
                                        new SqlParameter("@FULLNAME", FULLNAME),
+                                       new SqlParameter("@USERNICKNAME", USERNICKNAME),
+                                       new SqlParameter("@USERWECHATID", USERWECHATID),
                                        new SqlParameter("@USERCONTACTNO", CONTACTNO),
-                                       new SqlParameter("@USEREMAILADDRESS", USEREMAIL),
+                                       nUser_RegisterUsersew SqlParameter("@USEREMAILADDRESS", USEREMAIL),
                                        new SqlParameter("@USERADDRESS", USERADDRESS),
                                        new SqlParameter("@MINSELFPICKUPPRICE", Convert.ToDecimal(MINSELFPICKUPPRICE)),
                                        new SqlParameter("@CUBICSELFPICKUPPRICE", Convert.ToDecimal(CUBICSELFPICKUPPRICE)),
