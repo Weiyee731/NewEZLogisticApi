@@ -355,7 +355,7 @@ namespace YaweiLogistic.Controllers
                                        new SqlParameter("@USERNICKNAME", USERNICKNAME),
                                        new SqlParameter("@USERWECHATID", USERWECHATID),
                                        new SqlParameter("@USERCONTACTNO", CONTACTNO),
-                                       nUser_RegisterUsersew SqlParameter("@USEREMAILADDRESS", USEREMAIL),
+                                       new SqlParameter("@USEREMAILADDRESS", USEREMAIL),
                                        new SqlParameter("@USERADDRESS", USERADDRESS),
                                        new SqlParameter("@MINSELFPICKUPPRICE", Convert.ToDecimal(MINSELFPICKUPPRICE)),
                                        new SqlParameter("@CUBICSELFPICKUPPRICE", Convert.ToDecimal(CUBICSELFPICKUPPRICE)),
