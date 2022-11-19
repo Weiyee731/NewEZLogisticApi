@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Text;
+using System.Web;
 using System.Web.Http;
 using System.Web.Script.Serialization;
 
@@ -89,6 +92,39 @@ namespace YaweiLogistic.Controllers
         }
 
         [HttpGet]
+        [Route("api/YaweiLogistic/SendPushWhatapps")]
+        public string SendPushWhatapps(string USERPHONE, string CONTENT)
+        {
+            string str = "";
+            try
+            {
+                var url = "https://graph.facebook.com/v15.0/103624799223277/messages";
+
+                var httpRequest = (HttpWebRequest)WebRequest.Create(url);
+                httpRequest.Method = "POST";
+                httpRequest.ContentType = "application/json";
+                httpRequest.Headers["Authorization"] = "Bearer EAAQytsHsLBMBAPEkbooHkIhBDR425X7XQwELaxSHXuSZAhfaHYvhSZAYqF6OYeAQbj2dKxVGGKgCbuyfJUWZBfZCzHO9R1bSZBhyJbrHPnIOWGlLVaa3A09wpgKT8icTJppfTAHHxFZAsEbT9UcJknBx9BI7BYgFLTNMKbdwgLFammKBnEGAkw8IzinXZBACzPequy4mlYjyvdMZAbcFuSqy";
+
+                var data = @"{ ""messaging_product"": ""whatsapp"",""recipient_type"": ""individual"", ""to"": """ + USERPHONE + @""", ""type"": ""image"", ""image"": {""link"": ""https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png""} }";
+                using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
+                {
+                    streamWriter.Write(data);
+                }
+
+                var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                }
+            }
+            catch (Exception ex)
+            {
+                str = ex.Message;
+            }
+            return str;
+        }
+
+        [HttpGet]
         [Route("api/YaweiLogistic/User_Login")]
         public string User_Login(string username, string password)
         {
@@ -130,6 +166,15 @@ namespace YaweiLogistic.Controllers
                 Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
             }
             return Result;
+        }
+
+        [HttpGet]
+        [Route("api/YaweiLogistic/User_ForgetPassword")]
+        public string User_ForgetPassword(string USEREMAIL)
+        {
+            SqlParameter[] cmdParm = { new SqlParameter("@USEREMAIL", USEREMAIL) };
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.User_ForgetPassword", cmdParm);
+            return ReturnDataSet(ds);
         }
 
         public class User
@@ -491,6 +536,26 @@ namespace YaweiLogistic.Controllers
                         General_TriggerEmail(ds.Tables[0].Rows[0]["Title"].ToString(), ds.Tables[0].Rows[0]["Content"].ToString(), ds.Tables[1].Rows[i]["UserEmailAddress"].ToString());
                     }
                 }
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/YaweiLogistic/Notification_UpdateNotificationStatus")]
+        public string Notification_UpdateNotificationStatus(string NOTIFICATIONID, string NOTIFICATIONSTATUSID, string MODIFY)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONID", Convert.ToInt32(NOTIFICATIONID)),
+                                       new SqlParameter("@NOTIFICATIONSTATUSID", NOTIFICATIONSTATUSID),
+                                       new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_UpdateNotificationStatus", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
                 Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
             }
             else
@@ -934,20 +999,25 @@ namespace YaweiLogistic.Controllers
         {
             string Result = "";
             string[] TRACKINGNUMBERs = TRACKINGNUMBER.Split(',');
+            DataSet dsReturn = new DataSet();
+            dsReturn.Tables.Add(new DataTable());
+            dsReturn.Tables[0].Columns.Add("StockID");
+            dsReturn.Tables[0].Columns.Add("TrackingNumber");
+            dsReturn.Tables[0].Columns.Add("ReturnVal", typeof(System.Int32));
+            dsReturn.Tables[0].Columns.Add("ReturnMsg");
             for (int i = 0; i < TRACKINGNUMBERs.Length; i++)
             {
                 SqlParameter[] cmdParm = { new SqlParameter("@TRACKINGNUMBER", TRACKINGNUMBERs[i]),
                                            new SqlParameter("@CONTAINERID", CONTAINERID)};
                 DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Inventory_UpdateStockContainer", cmdParm);
-                if (ds.Tables[0].Rows.Count > 0)
-                {
-                    Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
-                }
-                else
-                {
-                    Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
-                }
+                DataRow dr = dsReturn.Tables[0].NewRow();
+                dr["StockID"] = ds.Tables[0].Rows[0]["StockID"].ToString();
+                dr["TrackingNumber"] = TRACKINGNUMBERs[i];
+                dr["ReturnVal"] = Convert.ToInt32(ds.Tables[0].Rows[0]["ReturnVal"].ToString());
+                dr["ReturnMsg"] = ds.Tables[0].Rows[0]["ReturnMsg"].ToString();
+                dsReturn.Tables[0].Rows.Add(dr);
             }
+            Result = DataTableToJSONWithJavaScriptSerializer(dsReturn.Tables[0]);
             return Result;
         }
 
