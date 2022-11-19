@@ -345,13 +345,14 @@ namespace YaweiLogistic.Controllers
 
         [HttpGet]
         [Route("api/YaweiLogistic/User_UpdateUserProfile")]
-        public string User_UpdateUserProfile(string USERID, string USERCODE, string USERAREAID, string FULLNAME, string USERWECHATID, string USERNICKNAME, string CONTACTNO, string USEREMAIL, string USERADDRESS, string MINSELFPICKUPPRICE, string CUBICSELFPICKUPPRICE, string CONSOLIDATEPRICE, string DELIVERYCARGO, string DELIVERYFIRSTPRICE, string DELIVERYSUBPRICE)
+        public string User_UpdateUserProfile(string USERID, string USERNAME,  string USERCODE, string USERAREAID, string FULLNAME, string USERWECHATID, string USERNICKNAME, string CONTACTNO, string USEREMAIL, string USERADDRESS, string MINSELFPICKUPPRICE, string CUBICSELFPICKUPPRICE, string CONSOLIDATEPRICE, string DELIVERYCARGO, string DELIVERYFIRSTPRICE, string DELIVERYSUBPRICE)
         {
             string Result = "";
             SqlParameter[] cmdParm = { new SqlParameter("@USERID", Convert.ToInt32(USERID)),
                                        new SqlParameter("@USERCODE", USERCODE),
                                        new SqlParameter("@USERAREAID", USERAREAID),
                                        new SqlParameter("@FULLNAME", FULLNAME),
+                                       new SqlParameter("@USERNAME", USERNAME),
                                        new SqlParameter("@USERNICKNAME", USERNICKNAME),
                                        new SqlParameter("@USERWECHATID", USERWECHATID),
                                        new SqlParameter("@USERCONTACTNO", CONTACTNO),
@@ -992,6 +993,8 @@ namespace YaweiLogistic.Controllers
             return Result;
         }
 
+
+
         [HttpGet]
         [Route("api/YaweiLogistic/Inventory_UpdateStockContainer")]
         public string Inventory_UpdateStockContainer(string TRACKINGNUMBER, string CONTAINERID)
@@ -1018,6 +1021,52 @@ namespace YaweiLogistic.Controllers
             }
             Result = DataTableToJSONWithJavaScriptSerializer(dsReturn.Tables[0]);
             return Result;
+        }
+
+        public class TRACKINGLIST
+        {
+            public string CONTAINERID { get; set; }
+            public string TRACKINGNUMBER { get; set; }
+        }
+
+        [HttpPost]
+        [Route("api/YaweiLogistic/Inventory_UpdateStockContainerByPost")]
+        public HttpResponseMessage Inventory_UpdateStockContainerByPost([FromBody] TRACKINGLIST TRACKINGLIST)
+        {
+            try
+            {
+                string Result = "";
+                string[] TRACKINGNUMBERs = TRACKINGLIST.TRACKINGNUMBER.Split(',');
+                DataSet dsReturn = new DataSet();
+                dsReturn.Tables.Add(new DataTable());
+                dsReturn.Tables[0].Columns.Add("StockID");
+                dsReturn.Tables[0].Columns.Add("TrackingNumber");
+                dsReturn.Tables[0].Columns.Add("ReturnVal", typeof(System.Int32));
+                dsReturn.Tables[0].Columns.Add("ReturnMsg");
+                for (int i = 0; i < TRACKINGNUMBERs.Length; i++)
+                {
+                    SqlParameter[] cmdParm = { new SqlParameter("@TRACKINGNUMBER", TRACKINGNUMBERs[i]),
+                                           new SqlParameter("@CONTAINERID", TRACKINGLIST.CONTAINERID)};
+                    DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Inventory_UpdateStockContainer", cmdParm);
+                    DataRow dr = dsReturn.Tables[0].NewRow();
+                    dr["StockID"] = ds.Tables[0].Rows[0]["StockID"].ToString();
+                    dr["TrackingNumber"] = TRACKINGNUMBERs[i];
+                    dr["ReturnVal"] = Convert.ToInt32(ds.Tables[0].Rows[0]["ReturnVal"].ToString());
+                    dr["ReturnMsg"] = ds.Tables[0].Rows[0]["ReturnMsg"].ToString();
+                    dsReturn.Tables[0].Rows.Add(dr);
+                }
+                Result = DataTableToJSONWithJavaScriptSerializer(dsReturn.Tables[0]);
+                var response = new HttpResponseMessage(HttpStatusCode.Created)
+                {
+                    Content = new StringContent(Result)
+
+                };
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
         }
 
         [HttpGet]
