@@ -169,6 +169,32 @@ namespace YaweiLogistic.Controllers
         }
 
         [HttpGet]
+        [Route("api/YaweiLogistic/User_Register_WithReferal")]
+        public string User_Register_WithReferal(string USERAREAID, string USERNAME, string FULLNAME, string PASSWORD, string CONTACTNO, string USEREMAIL, string USERNICKNAME, string USERWECHATID, string REFERALCODE)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@USERAREAID", USERAREAID),
+                                       new SqlParameter("@USERNAME", USERNAME),
+                                       new SqlParameter("@FULLNAME", FULLNAME),
+                                       new SqlParameter("@PASSWORD", EncryptString(PASSWORD)),
+                                       new SqlParameter("@CONTACTNO", CONTACTNO),
+                                       new SqlParameter("@USEREMAIL", USEREMAIL),
+                                       new SqlParameter("@USERNICKNAME", USERNICKNAME),
+                                       new SqlParameter("@REFERALCODE", REFERALCODE),
+                                       new SqlParameter("@USERWECHATID", USERWECHATID)};
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.User_Register_WithReferal", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
         [Route("api/YaweiLogistic/User_ForgetPassword")]
         public string User_ForgetPassword(string USEREMAIL)
         {
@@ -442,6 +468,24 @@ namespace YaweiLogistic.Controllers
                     }
 
                 }
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/YaweiLogistic/User_ViewCommissionList")]
+        public string User_ViewCommissionList(string USERCODE)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@USERCODE", USERCODE) };
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.User_ViewCommissionList", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
                 Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
             }
             else
@@ -1379,16 +1423,18 @@ namespace YaweiLogistic.Controllers
 
         [HttpGet]
         [Route("api/YaweiLogistic/Transaction_UpdateTransactionPayment")]
-        public string Transaction_UpdateTransactionPayment(string TRANSACTIONID, string PAYMENTAMMOUNT, string PAYMENTMETHOD, string REFERENCENO, string DATETIME)
+        public string Transaction_UpdateTransactionPayment(string TRANSACTIONID, string COMMISSIONID, string PAYMENTAMMOUNT, string PAYMENTMETHOD, string REFERENCENO, string DATETIME)
         {
             string Result = "";
             string[] TRANSACTIONIDList = TRANSACTIONID.Split(';');
             string[] PAYMENTAMMOUNTList = PAYMENTAMMOUNT.Split(';');
+            string[] COMMISSIONIDList = COMMISSIONID.Split(';');
 
             for (int i = 0; i < TRANSACTIONIDList.Length; i++)
             {
                 SqlParameter[] cmdParm = { new SqlParameter("@TRANSACTIONID", Convert.ToInt32(TRANSACTIONIDList[i])),
                                            new SqlParameter("@PAYMENTAMMOUNT", Convert.ToDecimal(PAYMENTAMMOUNTList[i])),
+                                            new SqlParameter("@COMMISSIONID", COMMISSIONIDList[i]),
                                            new SqlParameter("@PAYMENTMETHOD", PAYMENTMETHOD),
                                            new SqlParameter("@REFERENCENO", REFERENCENO),
                                            new SqlParameter("@DATETIME", DATETIME)};
