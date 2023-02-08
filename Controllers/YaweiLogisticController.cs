@@ -1181,6 +1181,78 @@ namespace YaweiLogistic.Controllers
             return Result;
         }
 
+
+        public class ParcelData
+        {
+            public string USERCODE { get; set; }
+            public string TRACKINGNUMBER { get; set; }
+            public string PRODUCTWEIGHT { get; set; }
+            public string PRODUCTHEIGHT { get; set; }
+            public string PRODUCTWIDTH { get; set; }
+            public string PRODUCTDEEP { get; set; }
+            public string ITEM { get; set; }
+            public string REMARK { get; set; }
+            public string COURIERID { get; set; }
+            public string MODIFY { get; set; }
+        }
+
+        [HttpPost]
+        [Route("api/YaweiLogistic/Inventory_AddStockByPost")]
+        public HttpResponseMessage Inventory_InsertStockByPost([FromBody] ParcelData ParcelData)
+
+        //  [Route("api/YaweiLogistic/Inventory_AddStock")]
+        //  public string Inventory_AddStock(string USERCODE, string TRACKINGNUMBER, string PRODUCTWEIGHT, string PRODUCTHEIGHT, string PRODUCTWIDTH, string PRODUCTDEEP, string ITEM, string REMARK, string COURIERID, string MODIFY)
+        {
+            try
+            {
+                string Result = "";
+                string[] USERCODEs = ParcelData.USERCODE.Split(',');
+                string[] TRACKINGNUMBERs = ParcelData.TRACKINGNUMBER.Split(',');
+                string[] PRODUCTWEIGHTs = ParcelData.PRODUCTWEIGHT.Split(',');
+                string[] PRODUCTHEIGHTs = ParcelData.PRODUCTHEIGHT.Split(',');
+                string[] PRODUCTWIDTHs = ParcelData.PRODUCTWIDTH.Split(',');
+                string[] PRODUCTDEEPs = ParcelData.PRODUCTDEEP.Split(',');
+                string[] ITEMs = ParcelData.ITEM.Split(',');
+                string[] REMARKs = ParcelData.REMARK.Split(',');
+                string[] COURIERIDs = ParcelData.COURIERID.Split(',');
+                for (int i = 0; i < USERCODEs.Length; i++)
+                {
+                    SqlParameter[] cmdParm = { new SqlParameter("@USERCODE", USERCODEs[i]),
+                                       new SqlParameter("@TRACKINGNUMBER", TRACKINGNUMBERs[i]),
+                                       new SqlParameter("@PRODUCTWEIGHT", Convert.ToDecimal(PRODUCTWEIGHTs[i])),
+                                       new SqlParameter("@PRODUCTHEIGHT", Convert.ToDecimal(PRODUCTHEIGHTs[i])),
+                                       new SqlParameter("@PRODUCTWIDTH", Convert.ToDecimal(PRODUCTWIDTHs[i])),
+                                       new SqlParameter("@PRODUCTDEEP", Convert.ToDecimal(PRODUCTDEEPs[i])),
+                                       new SqlParameter("@ITEM", ITEMs[i]),
+                                       new SqlParameter("@REMARK", REMARKs[i]),
+                                       new SqlParameter("@COURIERID", COURIERIDs[i]),
+                                       new SqlParameter("@MODIFY", Convert.ToInt32(ParcelData.MODIFY))};
+                    DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Inventory_AddStock", cmdParm);
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+                    }
+                    else
+                    {
+                        Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                    }
+                }
+                var response = new HttpResponseMessage(HttpStatusCode.Created)
+                {
+                    Content = new StringContent(Result)
+
+                };
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+
+            //return Result;
+        }
+
+
         public class Stock
         {
             public string STOCKID { get; set; }
