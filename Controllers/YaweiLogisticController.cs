@@ -532,62 +532,158 @@ namespace YaweiLogistic.Controllers
             return Result;
         }
 
-        [HttpGet]
-        [Route("api/YaweiLogistic/Notification_AddNotification")]
-        public string Notification_AddNotification(string NOTIFICATIONTITLE, string NOTIFICATIONDESC, string NOTIFICATIONSTATUSID, string MODIFY)
+        //[HttpGet]
+        //[Route("api/YaweiLogistic/Notification_AddNotification")]
+        //public string Notification_AddNotification(string NOTIFICATIONTITLE, string NOTIFICATIONDESC, string NOTIFICATIONSTATUSID, string MODIFY)
+        //{
+        //    string Result = "";
+        //    SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONTITLE", NOTIFICATIONTITLE),
+        //                               new SqlParameter("@NOTIFICATIONDESC", NOTIFICATIONDESC),
+        //                               new SqlParameter("@NOTIFICATIONSTATUSID", NOTIFICATIONSTATUSID),
+        //                               new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
+        //    DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_AddNotification", cmdParm);
+        //    if (ds.Tables[0].Rows.Count > 0)
+        //    {
+        //        if (ds.Tables[0].Rows[0]["SendInd"].ToString() == "1")
+        //        {
+        //            for(int i = 0; i < ds.Tables[1].Rows.Count; i++)
+        //            {
+        //                General_TriggerEmail(ds.Tables[0].Rows[0]["Title"].ToString(), ds.Tables[0].Rows[0]["Content"].ToString(), ds.Tables[1].Rows[i]["UserEmailAddress"].ToString());
+        //            }
+        //        }
+        //        Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+        //    }
+        //    else
+        //    {
+        //        Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+        //    }
+        //    return Result;
+        //}
+
+         public class NotificationData
         {
-            string Result = "";
-            SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONTITLE", NOTIFICATIONTITLE),
-                                       new SqlParameter("@NOTIFICATIONDESC", NOTIFICATIONDESC),
-                                       new SqlParameter("@NOTIFICATIONSTATUSID", NOTIFICATIONSTATUSID),
-                                       new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
-            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_AddNotification", cmdParm);
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                if (ds.Tables[0].Rows[0]["SendInd"].ToString() == "1")
-                {
-                    for(int i = 0; i < ds.Tables[1].Rows.Count; i++)
-                    {
-                        General_TriggerEmail(ds.Tables[0].Rows[0]["Title"].ToString(), ds.Tables[0].Rows[0]["Content"].ToString(), ds.Tables[1].Rows[i]["UserEmailAddress"].ToString());
-                    }
-                }
-                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
-            }
-            else
-            {
-                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
-            }
-            return Result;
+            public string NOTIFICATIONTITLE { get; set; }
+            public string NOTIFICATIONDESC { get; set; }
+            public string NOTIFICATIONSTATUSID { get; set; }
+            public string MODIFY { get; set; }
+            public string NOTIFICATIONID { get; set; }            
         }
 
-        [HttpGet]
-        [Route("api/YaweiLogistic/Notification_UpdateNotification")]
-        public string Notification_UpdateNotification(string NOTIFICATIONID, string NOTIFICATIONTITLE, string NOTIFICATIONDESC, string NOTIFICATIONSTATUSID, string MODIFY)
+        [HttpPost]
+        [Route("api/YaweiLogistic/Notification_AddNotificationByPost")]
+        public HttpResponseMessage Notification_AddNotificationByPost([FromBody] NotificationData NotificationData)
         {
-            string Result = "";
-            SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONID", Convert.ToInt32(NOTIFICATIONID)),
-                                       new SqlParameter("@NOTIFICATIONTITLE", NOTIFICATIONTITLE),
-                                       new SqlParameter("@NOTIFICATIONDESC", NOTIFICATIONDESC),
-                                       new SqlParameter("@NOTIFICATIONSTATUSID", NOTIFICATIONSTATUSID),
-                                       new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
-            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_UpdateNotification", cmdParm);
-            if (ds.Tables[0].Rows.Count > 0)
+            try
             {
-                if (ds.Tables[0].Rows[0]["SendInd"].ToString() == "1")
-                {
-                    for (int i = 0; i < ds.Tables[1].Rows.Count; i++)
+                string Result = ""; 
+                 SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONTITLE",  NotificationData.NOTIFICATIONTITLE),
+                                                new SqlParameter("@NOTIFICATIONDESC",  NotificationData.NOTIFICATIONDESC),
+                                                new SqlParameter("@NOTIFICATIONSTATUSID",  NotificationData.NOTIFICATIONSTATUSID),
+                                             new SqlParameter("@MODIFY", Convert.ToInt32(NotificationData.MODIFY))};
+                  DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_AddNotification", cmdParm);
+                    if (ds.Tables[0].Rows.Count > 0)
                     {
-                        General_TriggerEmail(ds.Tables[0].Rows[0]["Title"].ToString(), ds.Tables[0].Rows[0]["Content"].ToString(), ds.Tables[1].Rows[i]["UserEmailAddress"].ToString());
+                      if (ds.Tables[0].Rows[0]["SendInd"].ToString() == "1")
+                       {
+                            for(int i = 0; i < ds.Tables[1].Rows.Count; i++)
+                            {
+                                General_TriggerEmail(ds.Tables[0].Rows[0]["Title"].ToString(), ds.Tables[0].Rows[0]["Content"].ToString(), ds.Tables[1].Rows[i]["UserEmailAddress"].ToString());
+                            }
+                        }
+                        Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
                     }
-                }
-                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+                    else
+                    {
+                        Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                    }
+            
+                var response = new HttpResponseMessage(HttpStatusCode.Created)
+                {
+                    Content = new StringContent(Result)
+
+                };
+                return response;
             }
-            else
+            catch (Exception ex)
             {
-                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
             }
-            return Result;
+
+            //return Result;
         }
+
+        [HttpPost]
+        [Route("api/YaweiLogistic/Notification_UpdateNotificationByPost")]
+        public HttpResponseMessage Notification_UpdateNotificationByPost([FromBody] NotificationData NotificationData)
+        {
+            try
+            {
+                string Result = "";                
+                   SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONTITLE",  NotificationData.NOTIFICATIONTITLE),
+                                                new SqlParameter("@NOTIFICATIONDESC",  NotificationData.NOTIFICATIONDESC),
+                                                new SqlParameter("@NOTIFICATIONSTATUSID",  NotificationData.NOTIFICATIONSTATUSID),
+                                               new SqlParameter("@NOTIFICATIONID", Convert.ToInt32(NotificationData.NOTIFICATIONID)),
+                                             new SqlParameter("@MODIFY", Convert.ToInt32(NotificationData.MODIFY))};
+                    DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_UpdateNotification", cmdParm);
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                    if (ds.Tables[0].Rows[0]["SendInd"].ToString() == "1")
+                    {
+                        for (int i = 0; i < ds.Tables[1].Rows.Count; i++)
+                        {
+                            General_TriggerEmail(ds.Tables[0].Rows[0]["Title"].ToString(), ds.Tables[0].Rows[0]["Content"].ToString(), ds.Tables[1].Rows[i]["UserEmailAddress"].ToString());
+                        }
+                    }
+                        Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+                    }
+                    else
+                    {
+                        Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                    }
+            
+                var response = new HttpResponseMessage(HttpStatusCode.Created)
+                {
+                    Content = new StringContent(Result)
+
+                };
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+
+            //return Result;
+        }
+
+       //[HttpGet]
+       // [Route("api/YaweiLogistic/Notification_UpdateNotification")]
+       // public string Notification_UpdateNotification(string NOTIFICATIONID, string NOTIFICATIONTITLE, string NOTIFICATIONDESC, string NOTIFICATIONSTATUSID, string MODIFY)
+       // {
+       //     string Result = "";
+       //     SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONID", Convert.ToInt32(NOTIFICATIONID)),
+       //                                new SqlParameter("@NOTIFICATIONTITLE", NOTIFICATIONTITLE),
+       //                                new SqlParameter("@NOTIFICATIONDESC", NOTIFICATIONDESC),
+       //                                new SqlParameter("@NOTIFICATIONSTATUSID", NOTIFICATIONSTATUSID),
+       //                                new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
+       //     DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_UpdateNotification", cmdParm);
+       //     if (ds.Tables[0].Rows.Count > 0)
+       //     {
+       //         if (ds.Tables[0].Rows[0]["SendInd"].ToString() == "1")
+       //         {
+       //             for (int i = 0; i < ds.Tables[1].Rows.Count; i++)
+       //             {
+       //                 General_TriggerEmail(ds.Tables[0].Rows[0]["Title"].ToString(), ds.Tables[0].Rows[0]["Content"].ToString(), ds.Tables[1].Rows[i]["UserEmailAddress"].ToString());
+       //             }
+       //         }
+       //         Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+       //     }
+       //     else
+       //     {
+       //         Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+       //     }
+       //     return Result;
+       // }
 
         [HttpGet]
         [Route("api/YaweiLogistic/Notification_UpdateNotificationStatus")]
