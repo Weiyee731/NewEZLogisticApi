@@ -11,11 +11,11 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Script.Serialization;
 
-namespace NewEZLogistic.Controllers
+namespace EZLogistic.Controllers
 {
-    public class NewEZLogisticController : ApiController
+    public class EZLogisticController : ApiController
     {
-        public string constr_tour = ConfigurationManager.ConnectionStrings["NewEZLogistic"].ConnectionString;
+        public string constr_tour = ConfigurationManager.ConnectionStrings["EZLogistic"].ConnectionString;
         public string no_data_msg = "Sorry, there is no datas found!";
         public string error_msg = "Sorry, there is an error!";
         public string DataTableToJSONWithJavaScriptSerializer(DataTable table)
@@ -92,7 +92,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/SendPushWhatapps")]
+        [Route("api/EZLogistic/SendPushWhatapps")]
         public string SendPushWhatapps(string USERPHONE, string CONTENT)
         {
             string str = "";
@@ -125,7 +125,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/User_Login")]
+        [Route("api/EZLogistic/User_Login")]
         public string User_Login(string username, string password)
         {
             string Result = "";
@@ -144,7 +144,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/User_Register")]
+        [Route("api/EZLogistic/User_Register")]
         public string User_Register(string USERAREAID, string USERNAME, string FULLNAME, string PASSWORD, string CONTACTNO, string USEREMAIL, string USERNICKNAME, string USERWECHATID)
         {
             string Result = "";
@@ -169,7 +169,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/User_Register_WithReferal")]
+        [Route("api/EZLogistic/User_Register_WithReferal")]
         public string User_Register_WithReferal(string USERAREAID, string USERNAME, string FULLNAME, string PASSWORD, string CONTACTNO, string USEREMAIL, string USERNICKNAME, string USERWECHATID, string REFERALCODE)
         {
             string Result = "";
@@ -195,7 +195,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/User_ForgetPassword")]
+        [Route("api/EZLogistic/User_ForgetPassword")]
         public string User_ForgetPassword(string USEREMAIL)
         {
             SqlParameter[] cmdParm = { new SqlParameter("@USEREMAIL", USEREMAIL) };
@@ -220,7 +220,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpPost]
-        [Route("api/NewEZLogistic/User_RegisterUsersByPost")]
+        [Route("api/EZLogistic/User_RegisterUsersByPost")]
         public HttpResponseMessage User_RegisterUsersByPost([FromBody] User User)
         {
             try
@@ -278,7 +278,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/User_RegisterSimplify")]
+        [Route("api/EZLogistic/User_RegisterSimplify")]
         public string User_RegisterSimplify(string USERCODE, string USERAREAID, string USERNAME, string PASSWORD, string CONTACTNO)
         {
             string Result = "";
@@ -300,7 +300,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/User_ViewPage")]
+        [Route("api/EZLogistic/User_ViewPage")]
         public string User_ViewPage(string ROLEGROUPID, string USERID)
         {
             string Result = "";
@@ -333,7 +333,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/User_ViewAreaCode")]
+        [Route("api/EZLogistic/User_ViewAreaCode")]
         public string User_ViewAreaCode()
         {
             string Result = "";
@@ -352,7 +352,7 @@ namespace NewEZLogistic.Controllers
 
 
         [HttpGet]
-        [Route("api/NewEZLogistic/User_ViewProfile")]
+        [Route("api/EZLogistic/User_ViewProfile")]
         public string User_Profile()
         {
             string Result = "";
@@ -370,8 +370,8 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/User_UpdateUserProfile")]
-        public string User_UpdateUserProfile(string USERID, string USERNAME,  string USERCODE, string USERAREAID, string FULLNAME, string USERWECHATID, string USERNICKNAME, string CONTACTNO, string USEREMAIL, string USERADDRESS, string MINSELFPICKUPPRICE, string CUBICSELFPICKUPPRICE, string CONSOLIDATEPRICE, string DELIVERYCARGO, string DELIVERYFIRSTPRICE, string DELIVERYSUBPRICE)
+        [Route("api/EZLogistic/User_UpdateUserProfile")]
+        public string User_UpdateUserProfile(string USERID, string USERNAME, string USERCODE, string USERAREAID, string FULLNAME, string USERWECHATID, string USERNICKNAME, string CONTACTNO, string USEREMAIL, string USERADDRESS, string MINSELFPICKUPPRICE, string CUBICSELFPICKUPPRICE, string CONSOLIDATEPRICE, string DELIVERYCARGO, string DELIVERYFIRSTPRICE, string DELIVERYSUBPRICE)
         {
             string Result = "";
             SqlParameter[] cmdParm = { new SqlParameter("@USERID", Convert.ToInt32(USERID)),
@@ -403,7 +403,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/User_UpdateUserPassword")]
+        [Route("api/EZLogistic/User_UpdateUserPassword")]
         public string User_UpdateUserPassword(string USERID, string USERPASSWORD)
         {
             string Result = "";
@@ -414,7 +414,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/User_DeleteUserProfile")]
+        [Route("api/EZLogistic/User_DeleteUserProfile")]
         public string User_DeleteUserProfile(string USERID)
         {
             string Result = "";
@@ -432,7 +432,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/User_ViewProfileByID")]
+        [Route("api/EZLogistic/User_ViewProfileByID")]
         public string User_ProfileByID(string USERID)
         {
             string Result = "";
@@ -478,7 +478,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/User_ViewCommissionList")]
+        [Route("api/EZLogistic/User_ViewCommissionList")]
         public string User_ViewCommissionList(string USERCODE)
         {
             string Result = "";
@@ -496,7 +496,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/User_ViewProfileByUserCode")]
+        [Route("api/EZLogistic/User_ViewProfileByUserCode")]
         public string User_ViewProfileByUserCode(string USERCODE)
         {
             string Result = "";
@@ -514,7 +514,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Container_InsertNewContainer")]
+        [Route("api/EZLogistic/Container_InsertNewContainer")]
         public string Container_InsertNewContainer(string CONTAINERNAME, string CONTAINERDATE)
         {
             string Result = "";
@@ -533,7 +533,7 @@ namespace NewEZLogistic.Controllers
         }
 
         //[HttpGet]
-        //[Route("api/NewEZLogistic/Notification_AddNotification")]
+        //[Route("api/EZLogistic/Notification_AddNotification")]
         //public string Notification_AddNotification(string NOTIFICATIONTITLE, string NOTIFICATIONDESC, string NOTIFICATIONSTATUSID, string MODIFY)
         //{
         //    string Result = "";
@@ -560,73 +560,29 @@ namespace NewEZLogistic.Controllers
         //    return Result;
         //}
 
-         public class NotificationData
+        public class NotificationData
         {
             public string NOTIFICATIONTITLE { get; set; }
             public string NOTIFICATIONDESC { get; set; }
             public string NOTIFICATIONSTATUSID { get; set; }
             public string MODIFY { get; set; }
-            public string NOTIFICATIONID { get; set; }            
+            public string NOTIFICATIONID { get; set; }
         }
 
         [HttpPost]
-        [Route("api/NewEZLogistic/Notification_AddNotificationByPost")]
+        [Route("api/EZLogistic/Notification_AddNotificationByPost")]
         public HttpResponseMessage Notification_AddNotificationByPost([FromBody] NotificationData NotificationData)
         {
             try
             {
-                string Result = ""; 
-                 SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONTITLE",  NotificationData.NOTIFICATIONTITLE),
+                string Result = "";
+                SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONTITLE",  NotificationData.NOTIFICATIONTITLE),
                                                 new SqlParameter("@NOTIFICATIONDESC",  NotificationData.NOTIFICATIONDESC),
                                                 new SqlParameter("@NOTIFICATIONSTATUSID",  NotificationData.NOTIFICATIONSTATUSID),
                                              new SqlParameter("@MODIFY", Convert.ToInt32(NotificationData.MODIFY))};
-                  DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_AddNotification", cmdParm);
-                    if (ds.Tables[0].Rows.Count > 0)
-                    {
-                      if (ds.Tables[0].Rows[0]["SendInd"].ToString() == "1")
-                       {
-                            for(int i = 0; i < ds.Tables[1].Rows.Count; i++)
-                            {
-                                General_TriggerEmail(ds.Tables[0].Rows[0]["Title"].ToString(), ds.Tables[0].Rows[0]["Content"].ToString(), ds.Tables[1].Rows[i]["UserEmailAddress"].ToString());
-                            }
-                        }
-                        Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
-                    }
-                    else
-                    {
-                        Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
-                    }
-            
-                var response = new HttpResponseMessage(HttpStatusCode.Created)
+                DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_AddNotification", cmdParm);
+                if (ds.Tables[0].Rows.Count > 0)
                 {
-                    Content = new StringContent(Result)
-
-                };
-                return response;
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
-            }
-
-            //return Result;
-        }
-
-        [HttpPost]
-        [Route("api/NewEZLogistic/Notification_UpdateNotificationByPost")]
-        public HttpResponseMessage Notification_UpdateNotificationByPost([FromBody] NotificationData NotificationData)
-        {
-            try
-            {
-                string Result = "";                
-                   SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONTITLE",  NotificationData.NOTIFICATIONTITLE),
-                                                new SqlParameter("@NOTIFICATIONDESC",  NotificationData.NOTIFICATIONDESC),
-                                                new SqlParameter("@NOTIFICATIONSTATUSID",  NotificationData.NOTIFICATIONSTATUSID),
-                                               new SqlParameter("@NOTIFICATIONID", Convert.ToInt32(NotificationData.NOTIFICATIONID)),
-                                             new SqlParameter("@MODIFY", Convert.ToInt32(NotificationData.MODIFY))};
-                    DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_UpdateNotification", cmdParm);
-                    if (ds.Tables[0].Rows.Count > 0)
-                    {
                     if (ds.Tables[0].Rows[0]["SendInd"].ToString() == "1")
                     {
                         for (int i = 0; i < ds.Tables[1].Rows.Count; i++)
@@ -634,13 +590,13 @@ namespace NewEZLogistic.Controllers
                             General_TriggerEmail(ds.Tables[0].Rows[0]["Title"].ToString(), ds.Tables[0].Rows[0]["Content"].ToString(), ds.Tables[1].Rows[i]["UserEmailAddress"].ToString());
                         }
                     }
-                        Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
-                    }
-                    else
-                    {
-                        Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
-                    }
-            
+                    Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+                }
+                else
+                {
+                    Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                }
+
                 var response = new HttpResponseMessage(HttpStatusCode.Created)
                 {
                     Content = new StringContent(Result)
@@ -656,37 +612,81 @@ namespace NewEZLogistic.Controllers
             //return Result;
         }
 
-       //[HttpGet]
-       // [Route("api/NewEZLogistic/Notification_UpdateNotification")]
-       // public string Notification_UpdateNotification(string NOTIFICATIONID, string NOTIFICATIONTITLE, string NOTIFICATIONDESC, string NOTIFICATIONSTATUSID, string MODIFY)
-       // {
-       //     string Result = "";
-       //     SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONID", Convert.ToInt32(NOTIFICATIONID)),
-       //                                new SqlParameter("@NOTIFICATIONTITLE", NOTIFICATIONTITLE),
-       //                                new SqlParameter("@NOTIFICATIONDESC", NOTIFICATIONDESC),
-       //                                new SqlParameter("@NOTIFICATIONSTATUSID", NOTIFICATIONSTATUSID),
-       //                                new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
-       //     DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_UpdateNotification", cmdParm);
-       //     if (ds.Tables[0].Rows.Count > 0)
-       //     {
-       //         if (ds.Tables[0].Rows[0]["SendInd"].ToString() == "1")
-       //         {
-       //             for (int i = 0; i < ds.Tables[1].Rows.Count; i++)
-       //             {
-       //                 General_TriggerEmail(ds.Tables[0].Rows[0]["Title"].ToString(), ds.Tables[0].Rows[0]["Content"].ToString(), ds.Tables[1].Rows[i]["UserEmailAddress"].ToString());
-       //             }
-       //         }
-       //         Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
-       //     }
-       //     else
-       //     {
-       //         Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
-       //     }
-       //     return Result;
-       // }
+        [HttpPost]
+        [Route("api/EZLogistic/Notification_UpdateNotificationByPost")]
+        public HttpResponseMessage Notification_UpdateNotificationByPost([FromBody] NotificationData NotificationData)
+        {
+            try
+            {
+                string Result = "";
+                SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONTITLE",  NotificationData.NOTIFICATIONTITLE),
+                                                new SqlParameter("@NOTIFICATIONDESC",  NotificationData.NOTIFICATIONDESC),
+                                                new SqlParameter("@NOTIFICATIONSTATUSID",  NotificationData.NOTIFICATIONSTATUSID),
+                                               new SqlParameter("@NOTIFICATIONID", Convert.ToInt32(NotificationData.NOTIFICATIONID)),
+                                             new SqlParameter("@MODIFY", Convert.ToInt32(NotificationData.MODIFY))};
+                DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_UpdateNotification", cmdParm);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    if (ds.Tables[0].Rows[0]["SendInd"].ToString() == "1")
+                    {
+                        for (int i = 0; i < ds.Tables[1].Rows.Count; i++)
+                        {
+                            General_TriggerEmail(ds.Tables[0].Rows[0]["Title"].ToString(), ds.Tables[0].Rows[0]["Content"].ToString(), ds.Tables[1].Rows[i]["UserEmailAddress"].ToString());
+                        }
+                    }
+                    Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+                }
+                else
+                {
+                    Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+                }
+
+                var response = new HttpResponseMessage(HttpStatusCode.Created)
+                {
+                    Content = new StringContent(Result)
+
+                };
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+
+            //return Result;
+        }
+
+        //[HttpGet]
+        // [Route("api/EZLogistic/Notification_UpdateNotification")]
+        // public string Notification_UpdateNotification(string NOTIFICATIONID, string NOTIFICATIONTITLE, string NOTIFICATIONDESC, string NOTIFICATIONSTATUSID, string MODIFY)
+        // {
+        //     string Result = "";
+        //     SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONID", Convert.ToInt32(NOTIFICATIONID)),
+        //                                new SqlParameter("@NOTIFICATIONTITLE", NOTIFICATIONTITLE),
+        //                                new SqlParameter("@NOTIFICATIONDESC", NOTIFICATIONDESC),
+        //                                new SqlParameter("@NOTIFICATIONSTATUSID", NOTIFICATIONSTATUSID),
+        //                                new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
+        //     DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_UpdateNotification", cmdParm);
+        //     if (ds.Tables[0].Rows.Count > 0)
+        //     {
+        //         if (ds.Tables[0].Rows[0]["SendInd"].ToString() == "1")
+        //         {
+        //             for (int i = 0; i < ds.Tables[1].Rows.Count; i++)
+        //             {
+        //                 General_TriggerEmail(ds.Tables[0].Rows[0]["Title"].ToString(), ds.Tables[0].Rows[0]["Content"].ToString(), ds.Tables[1].Rows[i]["UserEmailAddress"].ToString());
+        //             }
+        //         }
+        //         Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+        //     }
+        //     else
+        //     {
+        //         Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+        //     }
+        //     return Result;
+        // }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Notification_UpdateNotificationStatus")]
+        [Route("api/EZLogistic/Notification_UpdateNotificationStatus")]
         public string Notification_UpdateNotificationStatus(string NOTIFICATIONID, string NOTIFICATIONSTATUSID, string MODIFY)
         {
             string Result = "";
@@ -706,7 +706,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Notification_DeleteNotification")]
+        [Route("api/EZLogistic/Notification_DeleteNotification")]
         public string Notification_DeleteNotification(string NOTIFICATIONID, string MODIFY)
         {
             string Result = "";
@@ -725,7 +725,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Notification_ViewNotification")]
+        [Route("api/EZLogistic/Notification_ViewNotification")]
         public string Notification_ViewNotification(string NOTIFICATIONSTATUSID)
         {
             string Result = "";
@@ -735,11 +735,11 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Notification_ViewNotification2")]
+        [Route("api/EZLogistic/Notification_ViewNotification2")]
         public string Notification_ViewNotification2(string NOTIFICATIONSTATUSID)
         {
             string Result = "";
-            SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONSTATUSID", Convert.ToInt32(NOTIFICATIONSTATUSID))};
+            SqlParameter[] cmdParm = { new SqlParameter("@NOTIFICATIONSTATUSID", Convert.ToInt32(NOTIFICATIONSTATUSID)) };
             DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Notification_ViewNotification", cmdParm);
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -753,7 +753,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Container_AddContainer")]
+        [Route("api/EZLogistic/Container_AddContainer")]
         public string Container_AddContainer(string CONTAINERNAME, string CONTAINERDATE, string MODIFY)
         {
             string Result = "";
@@ -773,7 +773,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Container_UpdateContainer")]
+        [Route("api/EZLogistic/Container_UpdateContainer")]
         public string Container_UpdateContainer(string CONTAINERID, string CONTAINERNAME, string CONTAINERREMARK, string CONTAINERDATE, string MODIFY)
         {
             string Result = "";
@@ -795,7 +795,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Container_UpdateContainerStatus")]
+        [Route("api/EZLogistic/Container_UpdateContainerStatus")]
         public string Container_UpdateContainerStatus(string CONTAINERID, string CONTAINERSTATUSID, string MODIFY)
         {
             string Result = "";
@@ -815,7 +815,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Container_DeleteContainer")]
+        [Route("api/EZLogistic/Container_DeleteContainer")]
         public string Container_DeleteContainer(string CONTAINERID, string MODIFY)
         {
             string Result = "";
@@ -834,7 +834,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Container_ViewContainer")]
+        [Route("api/EZLogistic/Container_ViewContainer")]
         public string Container_ViewContainer()
         {
             string Result = "";
@@ -852,7 +852,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Container_ViewContainerStatus")]
+        [Route("api/EZLogistic/Container_ViewContainerStatus")]
         public string Container_ViewContainerStatus()
         {
             string Result = "";
@@ -870,7 +870,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Courier_ViewCourier")]
+        [Route("api/EZLogistic/Courier_ViewCourier")]
         public string Courier_ViewCourier()
         {
             string Result = "";
@@ -887,10 +887,10 @@ namespace NewEZLogistic.Controllers
             return Result;
         }
 
-        
+
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Inventory_ViewStockList")]
+        [Route("api/EZLogistic/Inventory_ViewStockList")]
         public string Inventory_ViewStockList(string TRACKINGSTATUSID)
         {
             string Result = "";
@@ -908,7 +908,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Inventory_ViewStockListByFilter")]
+        [Route("api/EZLogistic/Inventory_ViewStockListByFilter")]
         public string Inventory_ViewStockListByFilter(string FILTERCOLUMN, string FILTERKEYWORD)
         {
             string Result = "";
@@ -927,11 +927,11 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Inventory_ViewStockByFilter")]
+        [Route("api/EZLogistic/Inventory_ViewStockByFilter")]
         public string Inventory_ViewStockByFilter(string FILTERCOLUMN)
         {
             string Result = "";
-            SqlParameter[] cmdParm = { new SqlParameter("@FILTERCOLUMN", FILTERCOLUMN)};
+            SqlParameter[] cmdParm = { new SqlParameter("@FILTERCOLUMN", FILTERCOLUMN) };
             DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Inventory_ViewStockByFilter", cmdParm);
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -945,7 +945,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Inventory_ViewStockByFilter2")]
+        [Route("api/EZLogistic/Inventory_ViewStockByFilter2")]
         public string Inventory_ViewStockByFilter2(string FILTERCOLUMN)
         {
             string Result = "";
@@ -956,7 +956,7 @@ namespace NewEZLogistic.Controllers
 
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Inventory_ViewStockListByDate")]
+        [Route("api/EZLogistic/Inventory_ViewStockListByDate")]
         public string Inventory_ViewStockListByDate(string STARTDATE, string ENDDATE)
         {
             string Result = "";
@@ -977,7 +977,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Inventory_UpdateStockDetail")]
+        [Route("api/EZLogistic/Inventory_UpdateStockDetail")]
         public string Inventory_UpdateStockDetail(string STOCKID, string USERCODE, string TRACKINGNUMBER, string PRODUCTWEIGHT, string PRODUCTHEIGHT, string PRODUCTWIDTH, string PRODUCTDEEP, string AREACODE, string ITEM, string TRACKINGSTATUSID, string CONTAINERNAME, string CONTAINERDATE, string REMARK, string EXTRACHARGE)
         {
             string Result = "";
@@ -1008,7 +1008,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Inventory_UpdateStock")]
+        [Route("api/EZLogistic/Inventory_UpdateStock")]
         public string Inventory_UpdateStock(string STOCKID, string USERCODE, string TRACKINGNUMBER, string PRODUCTWEIGHT, string PRODUCTHEIGHT, string PRODUCTWIDTH, string PRODUCTDEEP, string ITEM, string REMARK, string COURIERID, string MODIFY)
         {
             string Result = "";
@@ -1036,7 +1036,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Inventory_DeleteStock")]
+        [Route("api/EZLogistic/Inventory_DeleteStock")]
         public string Inventory_DeleteStock(string STOCKID, string MODIFY)
         {
             string Result = "";
@@ -1055,7 +1055,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpPost]
-        [Route("api/NewEZLogistic/Inventory_UpdateStockDetailByPost")]
+        [Route("api/EZLogistic/Inventory_UpdateStockDetailByPost")]
         public HttpResponseMessage Inventory_UpdateStockDetailByPost([FromBody] Stock Stock)
         {
             try
@@ -1115,7 +1115,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Inventory_UpdateStockStatus")]
+        [Route("api/EZLogistic/Inventory_UpdateStockStatus")]
         public string Inventory_UpdateStockStatus(string STOCKID, string CONTAINERID)
         {
             string Result = "";
@@ -1136,7 +1136,7 @@ namespace NewEZLogistic.Controllers
 
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Inventory_UpdateStockContainer")]
+        [Route("api/EZLogistic/Inventory_UpdateStockContainer")]
         public string Inventory_UpdateStockContainer(string TRACKINGNUMBER, string CONTAINERID)
         {
             string Result = "";
@@ -1170,7 +1170,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpPost]
-        [Route("api/NewEZLogistic/Inventory_UpdateStockContainerByPost")]
+        [Route("api/EZLogistic/Inventory_UpdateStockContainerByPost")]
         public HttpResponseMessage Inventory_UpdateStockContainerByPost([FromBody] TRACKINGLIST TRACKINGLIST)
         {
             try
@@ -1210,7 +1210,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Inventory_AddStock")]
+        [Route("api/EZLogistic/Inventory_AddStock")]
         public string Inventory_AddStock(string USERCODE, string TRACKINGNUMBER, string PRODUCTWEIGHT, string PRODUCTHEIGHT, string PRODUCTWIDTH, string PRODUCTDEEP, string ITEM, string REMARK, string COURIERID, string MODIFY)
         {
             string Result = "";
@@ -1249,7 +1249,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Inventory_InsertStock")]
+        [Route("api/EZLogistic/Inventory_InsertStock")]
         public string Inventory_InsertStock(string USERCODE, string TRACKINGNUMBER, string PRODUCTWEIGHT, string PRODUCTHEIGHT, string PRODUCTWIDTH, string PRODUCTDEEP, string AREACODE, string ITEM, string STOCKDATE, string PACKAGINGDATE, string REMARK, string EXTRACHARGE)
         {
             string Result = "";
@@ -1293,10 +1293,10 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpPost]
-        [Route("api/NewEZLogistic/Inventory_AddStockByPost")]
+        [Route("api/EZLogistic/Inventory_AddStockByPost")]
         public HttpResponseMessage Inventory_InsertStockByPost([FromBody] ParcelData ParcelData)
 
-        //  [Route("api/NewEZLogistic/Inventory_AddStock")]
+        //  [Route("api/EZLogistic/Inventory_AddStock")]
         //  public string Inventory_AddStock(string USERCODE, string TRACKINGNUMBER, string PRODUCTWEIGHT, string PRODUCTHEIGHT, string PRODUCTWIDTH, string PRODUCTDEEP, string ITEM, string REMARK, string COURIERID, string MODIFY)
         {
             try
@@ -1373,7 +1373,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpPost]
-        [Route("api/NewEZLogistic/Inventory_InsertStockByPost")]
+        [Route("api/EZLogistic/Inventory_InsertStockByPost")]
         public HttpResponseMessage Inventory_InsertStockByPost([FromBody] Stock Stock)
         {
             try
@@ -1449,7 +1449,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Transaction_InsertTransaction")]
+        [Route("api/EZLogistic/Transaction_InsertTransaction")]
         public string Transaction_InsertTransaction(string USERID, string CALCULATIONTYPE, string DELIVERYFEE, string ORDERTOTALMOUNT, string ORDERSUBTOTALMOUNT, string ORDERPAIDMOUNT, string FIRSTKG, string SUBSEQUENCEKG, string STOCKID, string PRODUCTPRICE, string PRODUCTQUANTITY, string PRODUCTDIMENSION, string PRODUCTUNITPRICE)
         {
             string Result = "";
@@ -1500,7 +1500,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Transaction_ViewTransaction")]
+        [Route("api/EZLogistic/Transaction_ViewTransaction")]
         public string Transaction_ViewTransaction(string TrackingStatusID)
         {
             string Result = "";
@@ -1529,7 +1529,25 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Transaction_ViewTransactionByID")]
+        [Route("api/EZLogistic/Transaction_ViewTransactionByUserID")]
+        public string Transaction_ViewTransactionByUserID(string USERID)
+        {
+            string Result = "";
+            SqlParameter[] cmdParm = { new SqlParameter("@USERID", Convert.ToInt32(USERID)) };
+            DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.Transaction_ViewTransactionByUserID", cmdParm);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Result = DataTableToJSONWithJavaScriptSerializer(ds.Tables[0]);
+            }
+            else
+            {
+                Result = "[{\"ReturnVal\":0,\"ReturnMsg\":\"" + no_data_msg + "\"}]";
+            }
+            return Result;
+        }
+
+        [HttpGet]
+        [Route("api/EZLogistic/Transaction_ViewTransactionByID")]
         public string Transaction_ViewTransactionByID(string TRANSACTIONID)
         {
             string Result = "";
@@ -1570,7 +1588,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Transaction_UpdateTransactionStatus")]
+        [Route("api/EZLogistic/Transaction_UpdateTransactionStatus")]
         public string Transaction_UpdateTransactionStatus(string TRANSACTIONID, string TRANSPORTATIONTYPE, string DELIVERYFEE)
         {
             string Result = "";
@@ -1590,7 +1608,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Transaction_UpdateTransactionPayment")]
+        [Route("api/EZLogistic/Transaction_UpdateTransactionPayment")]
         public string Transaction_UpdateTransactionPayment(string TRANSACTIONID, string COMMISSIONID, string PAYMENTAMMOUNT, string PAYMENTMETHOD, string REFERENCENO, string DATETIME)
         {
             string Result = "";
@@ -1620,7 +1638,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Transaction_UpdateTransactionDetailHandling")]
+        [Route("api/EZLogistic/Transaction_UpdateTransactionDetailHandling")]
         public string Transaction_UpdateTransactionDetailHandling(string TRANSACTIONDETAILID, string PRODUCTHANDLINGPRICE)
         {
             string Result = "";
@@ -1644,7 +1662,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Transaction_ViewArchiveTransaction")]
+        [Route("api/EZLogistic/Transaction_ViewArchiveTransaction")]
         public string Transaction_ViewArchiveTransaction(string STARTDATE, string ENDDATE)
         {
             string Result = "";
@@ -1663,7 +1681,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Inventory_ViewArchiveStockListByDate")]
+        [Route("api/EZLogistic/Inventory_ViewArchiveStockListByDate")]
         public string Inventory_ViewArchiveStockListByDate(string STARTDATE, string ENDDATE)
         {
             string Result = "";
@@ -1682,7 +1700,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Dashboard_View")]
+        [Route("api/EZLogistic/Dashboard_View")]
         public string Dashboard_View()
         {
             string Result = "";
@@ -1724,7 +1742,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Transaction_DeleteTransaction")]
+        [Route("api/EZLogistic/Transaction_DeleteTransaction")]
         public string Transaction_DeleteTransaction(string TRANSACTIONID)
         {
             string Result = "";
@@ -1747,13 +1765,24 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/User_AddUserAreaCode")]
-        public string User_AddUserAreaCode(string AREACODE, string AREANAME, string MODIFY)
+        [Route("api/EZLogistic/User_AddUserAreaCode")]
+        public string User_AddUserAreaCode(string AREACODE, string AREANAME, string MODIFY, string AGENDIND, string USERCODE, string MINIMUMCUBIC, string AREACHARGES,
+                                            string SELFPICKSMALL, string CONSOLIDATE, string LARGEDELIVERY, string SMALLDELIVERYFIRST, string SMALLDELIVERYSUB)
         {
             string Result = "";
             SqlParameter[] cmdParm = { new SqlParameter("@AREACODE", AREACODE),
                                        new SqlParameter("@AREANAME", AREANAME),
-                                       new SqlParameter("@MODIFY", Convert.ToInt32(MODIFY))};
+                                       new SqlParameter("@MODIFYBY", Convert.ToInt32(MODIFY)),
+                                       new SqlParameter("@AGENDIND", Convert.ToInt32(AGENDIND)),
+                                       new SqlParameter("@MINIMUMCUBIC", Convert.ToDecimal(MINIMUMCUBIC)),
+                                       new SqlParameter("@USERCODE", USERCODE),
+                                       new SqlParameter("@AREACHARGES", Convert.ToDecimal(AREACHARGES)),
+                                       new SqlParameter("@SELFPICKSMALL", Convert.ToDecimal(SELFPICKSMALL)),
+                                       new SqlParameter("@CONSOLIDATE", Convert.ToDecimal(CONSOLIDATE)),
+                                       new SqlParameter("@LARGEDELIVERY", Convert.ToDecimal(LARGEDELIVERY)),
+                                       new SqlParameter("@SMALLDELIVERYSUB", Convert.ToDecimal(SMALLDELIVERYSUB)),
+                                       new SqlParameter("@SMALLDELIVERYFIRST", Convert.ToDecimal(SMALLDELIVERYFIRST))
+            };
             DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.User_AddUserAreaCode", cmdParm);
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -1766,8 +1795,9 @@ namespace NewEZLogistic.Controllers
             return Result;
         }
 
+
         [HttpGet]
-        [Route("api/NewEZLogistic/User_UpdateUserAreaCode")]
+        [Route("api/EZLogistic/User_UpdateUserAreaCode")]
         public string User_UpdateUserAreaCode(string USERAREAID, string AREACODE, string AREANAME, string MODIFY)
         {
             string Result = "";
@@ -1788,7 +1818,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/User_DeleteUserAreaCode")]
+        [Route("api/EZLogistic/User_DeleteUserAreaCode")]
         public string User_DeleteUserAreaCode(string USERAREAID, string MODIFY)
         {
             string Result = "";
@@ -1807,20 +1837,28 @@ namespace NewEZLogistic.Controllers
         }
 
 
-        
-
         [HttpGet]
-        [Route("api/NewEZLogistic/User_UpdateAreaCode")]
-        public string User_UpdateAreaCode(string USERAREAID, string AREACODE, string AREANAME, string AGENDIND, string USERID, string MINIMUMCUBIC, string AREACHARGES)
+        [Route("api/EZLogistic/User_UpdateAreaCode")]
+        public string User_UpdateAreaCode(string USERAREAID, string AREACODE, string AREANAME, string AGENDIND, string USERCODE, string MINIMUMCUBIC, string AREACHARGES, string MODIFY,
+          string SELFPICKSMALL, string CONSOLIDATE, string LARGEDELIVERY, string SMALLDELIVERYFIRST, string SMALLDELIVERYSUB)
         {
             string Result = "";
             SqlParameter[] cmdParm = { new SqlParameter("@USERAREAID", Convert.ToInt32(USERAREAID)),
                                        new SqlParameter("@AREACODE", AREACODE),
                                        new SqlParameter("@AREANAME", AREANAME),
                                        new SqlParameter("@AGENDIND", Convert.ToInt32(AGENDIND)),
-                                       new SqlParameter("@USERID", Convert.ToInt32(USERID)),
+                                       new SqlParameter("@USERCODE", USERCODE),
                                        new SqlParameter("@MINIMUMCUBIC", Convert.ToDecimal(MINIMUMCUBIC)),
-                                       new SqlParameter("@AREACHARGES", Convert.ToDecimal(AREACHARGES))};
+                                       new SqlParameter("@MODIFYBY", Convert.ToInt32(MODIFY)),
+                                       new SqlParameter("@AREACHARGES", Convert.ToDecimal(AREACHARGES)),
+                                       new SqlParameter("@SELFPICKSMALL", Convert.ToDecimal(SELFPICKSMALL)),
+                                       new SqlParameter("@CONSOLIDATE", Convert.ToDecimal(CONSOLIDATE)),
+                                       new SqlParameter("@LARGEDELIVERY", Convert.ToDecimal(LARGEDELIVERY)),
+                                       new SqlParameter("@SMALLDELIVERYSUB", Convert.ToDecimal(SMALLDELIVERYSUB)),
+                                       new SqlParameter("@SMALLDELIVERYFIRST", Convert.ToDecimal(SMALLDELIVERYFIRST))
+
+
+                };
             DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.User_UpdateAreaCode", cmdParm);
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -1834,7 +1872,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/User_DeleteAreaCode")]
+        [Route("api/EZLogistic/User_DeleteAreaCode")]
         public string User_DeleteAreaCode(string USERAREAID)
         {
             string Result = "";
@@ -1852,7 +1890,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Report_ViewStockSummary")]
+        [Route("api/EZLogistic/Report_ViewStockSummary")]
         public string Report_ViewStockSummary()
         {
             string Result = "";
@@ -1870,7 +1908,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/User_CalculateParcelPrice")]
+        [Route("api/EZLogistic/User_CalculateParcelPrice")]
         public string User_CalculateParcelPrice(string SELECTEDAREAID, string USERID, string PARCELWEIGHT, string PARCELWIDTH, string PARCELHEIGHT, string PARCELLENGTH)
         {
             string Result = "";
@@ -1885,7 +1923,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/Inventory_UpdateStockUser")]
+        [Route("api/EZLogistic/Inventory_UpdateStockUser")]
         public string Inventory_UpdateStockUser(string STOCKID, string USERID)
         {
             string Result = "";
@@ -1908,11 +1946,11 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/NewEZLogistic/User_ViewGeneralSetting")]
+        [Route("api/EZLogistic/User_ViewGeneralSetting")]
         public string User_ViewGeneralSetting(string USERID)
         {
             string Result = "";
-            SqlParameter[] cmdParm = { new SqlParameter("@USERID", Convert.ToInt32(USERID))};
+            SqlParameter[] cmdParm = { new SqlParameter("@USERID", Convert.ToInt32(USERID)) };
             DataSet ds = Models.SQLHelper.ExecuteQuery(constr_tour, null, CommandType.StoredProcedure, "dbo.User_ViewGeneralSetting", cmdParm);
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -1926,7 +1964,7 @@ namespace NewEZLogistic.Controllers
         }
 
         [HttpGet]
-        [Route("api/YHGApi/General_TriggerEmail")]
+        [Route("api/EZLogistic/General_TriggerEmail")]
         public string General_TriggerEmail(string SUBJECT, string BODY, string RECIPIENTS)
         {
             DataSet ds = new DataSet();

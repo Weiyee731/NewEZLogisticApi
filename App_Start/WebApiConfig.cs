@@ -6,7 +6,7 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web.Http;
 
-namespace NewEZLogistic
+namespace EZLogistic
 {
     public static class WebApiConfig
     {
